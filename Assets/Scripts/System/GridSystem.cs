@@ -40,6 +40,10 @@ public class GridSystem : MonoBehaviour
             rb.AddForce(Vector3.down * additionalGravity, ForceMode.Acceleration);
         }
     }
+    private void SpawnObject()
+    {
+
+    }
 
     private void OnClick()
     {

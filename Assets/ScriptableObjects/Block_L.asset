@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7233a1b6669809e42bb88438e2e92191, type: 3}
-  m_Name: Cube
+  m_Name: Block_L
   m_EditorClassIdentifier: 
-  prefab: {fileID: 7350862891416840008, guid: 7e3eda54d08ce5445ba86ed9a6bc4019, type: 3}
-  sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  objectName: Cube
+  prefab: {fileID: 3240259009092524935, guid: 094954d3aba67744bbd83d766ec46f9b, type: 3}
+  sprite: {fileID: 0}
+  objectName: Orange Ricky
