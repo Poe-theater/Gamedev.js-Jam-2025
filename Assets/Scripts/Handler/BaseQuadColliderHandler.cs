@@ -24,7 +24,7 @@ public class BaseQuadColliderHandler : MonoBehaviour
             emission = minIntensity + Mathf.PingPong(Time.time * pulseSpeed, maxIntensity - minIntensity);
             glowMaterial.SetColor("_EmissionColor", Color.green * emission);
 
-            if (emission > maxIntensity - 1)
+            if (emission > maxIntensity - 2)
             {
                 haveCollided = false;
                 glowMaterial.SetColor("_EmissionColor", Color.green * minIntensity);

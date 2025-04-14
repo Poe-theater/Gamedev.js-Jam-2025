@@ -8,9 +8,15 @@ public class PlayerManage : MonoBehaviour
     private void Start()
     {
         dropSystem.yCoord = gridSystem.quadBlocker.transform.position.y + 10;
-        dropSystem.SetBlock(gridSystem.SpawnObject(0));
+        CreateBlock();
 
         dropSystem.OnBlockDrop += DropSystem_OnBlockDrop;
+    }
+
+    [ContextMenu("create block")]
+    void CreateBlock()
+    {
+        dropSystem.SetBlock(gridSystem.SpawnObject(0));
     }
 
     private void OnDisable()
