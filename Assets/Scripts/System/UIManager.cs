@@ -1,16 +1,27 @@
+using System;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    [SerializeField] private Transform container;
+    [SerializeField] private Transform BlockTemplate;
+    [SerializeField] private BlockObjectSO[] block;
+
+
+    [ContextMenu("Setup Visual")] 
+    private void SetupVisual()
     {
-        
+        Debug.Log("ciao");
+        foreach (BlockObjectSO item in block) {
+            Transform blockTransform = Instantiate(BlockTemplate, container);
+
+            blockTransform.GetComponent<ManagerSingleUI>().setBlockSO(item);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void UpdateVisual()
     {
-        
+
     }
 }
