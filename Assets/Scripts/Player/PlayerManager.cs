@@ -13,70 +13,82 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        dropSystem.yCoord = gridSystem.quadBlocker.transform.position.y + 15;
         InitializeBlockInventory();
-        dropSystem.OnBlockDrop += DropSystem_OnBlockDrop;
+        dropSystem.OnBlockDrop += HandleBlockDrop;
     }
 
+    /// <summary>
+    /// Initialize the inventory dictionary with all block types from blockListSO set to zero.
+    /// </summary>
     private void InitializeBlockInventory()
     {
         foreach (BlockObjectSO blockSO in blockListSO.blockListSO)
-        {
             blockInventory.Add(blockSO, 0);
-        }
     }
 
+    /// <summary>
+    /// Adds one unit of the specified block to the inventory and updates the UI.
+    /// </summary>
     public void AddToInventory(BlockObjectSO blockSO)
     {
         if (blockInventory.ContainsKey(blockSO))
         {
-            blockInventory[blockSO] += 1;
-            uiManager.UpdateVisual(blockSO.GetInstanceID(), blockInventory[blockSO]);
+            blockInventory[blockSO]++;
+            uiManager.UpdateVisual(blockSO.id, blockInventory[blockSO]);
             Debug.Log(blockSO.name + blockInventory[blockSO]);
         }
     }
 
+    /// <summary>
+    /// Removes one unit of the specified block from the inventory and updates the UI.
+    /// </summary>
     private void RemoveFromInventory(BlockObjectSO blockSO)
     {
         if (blockInventory.ContainsKey(blockSO))
         {
-            blockInventory[blockSO] -= 1;
+            blockInventory[blockSO]--;
             uiManager.UpdateVisual(blockSO.GetInstanceID(), blockInventory[blockSO]);
         }
     }
 
     private void OnDisable()
     {
-        dropSystem.OnBlockDrop -= DropSystem_OnBlockDrop;
+        dropSystem.OnBlockDrop -= HandleBlockDrop;
     }
 
-    private void DropSystem_OnBlockDrop(object sender, System.EventArgs e)
+    /// <summary>
+    /// Callback for when a block is dropped.
+    /// </summary>
+    private void HandleBlockDrop(object sender, EventArgs e)
     {
         gridSystem.ChangeBlockerStatus();
     }
 
     private void Update()
     {
-        for (int i = 1; i <= 5; i++)
+        if (dropSystem.Block == null)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+            for (int i = 1; i <= 5; i++)
             {
-                if (blockInventory.Count >= i)
+                if (Input.GetKeyDown(KeyCode.Alpha0 + i))
                 {
-                    var entry = blockInventory.ElementAt(i - 1);
-                    if (entry.Value > 0)
+                    if (blockInventory.Count >= i)
                     {
-                        RemoveFromInventory(entry.Key);
-                        dropSystem.SetBlock(gridSystem.SpawnObject(entry.Key.prefab));
+                        var inventoryEntry = blockInventory.ElementAt(i - 1);
+                        if (inventoryEntry.Value > 0)
+                        {
+                            RemoveFromInventory(inventoryEntry.Key);
+                            dropSystem.SetBlock(gridSystem.SpawnObject(inventoryEntry.Key.prefab));
+                        }
+                        else
+                            Debug.Log("Not enough blocks.");
                     }
                     else
-                        Debug.Log("Not enough blocks.");
+                        Debug.Log($"No block assigned to key {i}.");
                 }
-                else
-                    Debug.Log($"No block assigned to key {i}.");
             }
         }
-        dropSystem.Loop();
+        else
+            dropSystem.Loop();
     }
-
 }

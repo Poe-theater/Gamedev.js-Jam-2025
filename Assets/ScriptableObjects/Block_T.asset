@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7233a1b6669809e42bb88438e2e92191, type: 3}
   m_Name: Block_T
   m_EditorClassIdentifier: 
-  prefab: {fileID: 541917872715186069, guid: f00e67a8456ad444d94ab48509d6f9e2, type: 3}
+  id: 3
   sprite: {fileID: 21300000, guid: 045ed98f247605547b8020ba52c314c5, type: 3}
+  prefab: {fileID: 541917872715186069, guid: f00e67a8456ad444d94ab48509d6f9e2, type: 3}
   objectName: Teewee

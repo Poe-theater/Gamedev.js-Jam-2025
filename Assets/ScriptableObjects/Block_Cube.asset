@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7233a1b6669809e42bb88438e2e92191, type: 3}
   m_Name: Block_Cube
   m_EditorClassIdentifier: 
-  prefab: {fileID: 11644418944618179, guid: 5c68a6053a77bde44b777cf8ed88f5e3, type: 3}
+  id: 4
   sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  prefab: {fileID: 11644418944618179, guid: 5c68a6053a77bde44b777cf8ed88f5e3, type: 3}
   objectName: Cube

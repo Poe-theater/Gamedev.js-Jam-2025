@@ -5,91 +5,93 @@ public class PlayerDropSystem : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     [SerializeField] private float forceMultiplier = 5f;
-    [SerializeField] private float extraGravityMultiplier = 2.0f;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private Vector3 offset;
+    [SerializeField] private bool isDragging;
+    [SerializeField] private Vector3 previousDragPos;
+    [SerializeField] private Vector3 dragVelocity;
 
-    private Vector3 offset;
-    private bool isDragging = false;
-    private Rigidbody rb = null;
-
-    private Vector3 previousDragPos;
-    private Vector3 dragVelocity;
-
-    public float yCoord;
-    public Transform block;
-
+    public Transform Block { get; private set; }
     public event EventHandler OnBlockDrop;
 
+    public Transform quadBlocker;
+
+    /// <summary>
+    /// Processes user input each frame. Checks for drag, release, and rotation inputs.
+    /// </summary>
     public void Loop()
     {
-        if (block != null)
-        {
-            if (Input.GetMouseButtonDown(0)) OnClick();
-            if (Input.GetMouseButton(0) && isDragging) OnDrag();
-            if (Input.GetMouseButtonUp(0)) OnRelease();
-            if (Input.GetKeyDown(KeyCode.Q)) Rotate(1);
-            if (Input.GetKeyDown(KeyCode.E)) Rotate(-1);
-        }
+        if (Input.GetMouseButtonDown(0)) BeginDrag();
+        else if (Input.GetMouseButton(0) && isDragging) Drag();
+        else if (Input.GetMouseButtonUp(0)) EndDrag();
+
+        if (Input.GetKeyDown(KeyCode.Q)) Block.Rotate(0, 90, 0);
+        if (Input.GetKeyDown(KeyCode.E)) Block.Rotate(0, 0, 90);
     }
 
-    void Rotate(int dir)
+    /// <summary>
+    /// Prepares a block for dragging. Sets the block reference and caches its Rigidbody.
+    /// </summary>
+    /// <param name="newBlock">The block to manipulate.</param>
+    public void SetBlock(Transform newBlock)
     {
-        if (dir == 1)
-            block.transform.Rotate(0, 90, 0);
+        Block = newBlock;
+        if (!Block.TryGetComponent(out rb))
+            Debug.LogError("The selected block does not have a Rigidbody component.");
         else
-            block.transform.Rotate(0, 0, 90);
+            rb.isKinematic = true;
     }
 
-    void FixedUpdate()
+    /// <summary>
+    /// Initiates the dragging process by calculating the offset between the block and the mouse's world position.
+    /// </summary>
+    private void BeginDrag()
     {
-        if (rb != null && rb.linearVelocity.y < 0 && !isDragging)
-        {
-            float additionalGravity = (extraGravityMultiplier - 1f) * Physics.gravity.magnitude;
-            rb.AddForce(Vector3.down * additionalGravity, ForceMode.Acceleration);
-        }
-    }
-
-    public void SetBlock(Transform blockTransform)
-    {
-        block = blockTransform;
-        blockTransform.TryGetComponent<Rigidbody>(out rb);
-        rb.isKinematic = true;
-    }
-
-    private void OnClick()
-    {
-        offset = block.position - GetMouseWorldPos();
-        previousDragPos = block.position;
+        offset = Block.position - GetMouseWorldPosition();
+        previousDragPos = Block.position;
         isDragging = true;
     }
 
-    private void OnDrag()
+    /// <summary>
+    /// Handles the dragging process by moving the block based on the mouse's world position.
+    /// Calculates drag velocity for applying momentum when released.
+    /// </summary>
+    private void Drag()
     {
-        Vector3 currentDragPos = GetMouseWorldPos() + offset;
-        currentDragPos.y = yCoord;
-        rb.MovePosition(currentDragPos);
+        Vector3 targetPos = GetMouseWorldPosition() + offset;
+        targetPos.y = quadBlocker.position.y + 5;
+        rb.MovePosition(targetPos);
 
-        dragVelocity = (currentDragPos - previousDragPos) / Time.deltaTime;
-        previousDragPos = currentDragPos;
+        dragVelocity = (targetPos - previousDragPos) / Time.deltaTime;
+        previousDragPos = targetPos;
     }
 
-    private void OnRelease()
+    /// <summary>
+    /// Ends the dragging process. Releases the block, applies momentum force, and notifies listeners.
+    /// </summary>
+    private void EndDrag()
     {
         OnBlockDrop?.Invoke(this, EventArgs.Empty);
 
         isDragging = false;
-        block = null;
         rb.isKinematic = false;
         rb.AddForce(dragVelocity * forceMultiplier, ForceMode.VelocityChange);
+
+        Block = null;
     }
 
-    private Vector3 GetMouseWorldPos()
+    /// <summary>
+    /// Converts the current mouse position to a point in world space based on a horizontal drag plane.
+    /// </summary>
+    /// <returns>The calculated world position.</returns>
+    private Vector3 GetMouseWorldPosition()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        Plane dragPlane = new(Vector3.up, new Vector3(0, yCoord, 0));
+        Plane dragPlane = new (Vector3.up, new Vector3(0, quadBlocker.position.y, 0));
 
         if (dragPlane.Raycast(ray, out float distance))
             return ray.GetPoint(distance);
 
-        return block.position;
+        return Block != null ? Block.position : Vector3.zero;
     }
 }

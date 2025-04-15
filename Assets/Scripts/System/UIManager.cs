@@ -9,11 +9,11 @@ public class UIManager : MonoBehaviour
     [Serializable]
     public struct UiBlock
     {
-        public int id;
         public TextMeshProUGUI BlockNameText;
         public TextMeshProUGUI BlockQuantityText;
         public Transform IconContainer;
         public Transform IconTemplate;
+        public BlockObjectSO blockData;
         
         private Image _iconImage;
 
@@ -36,9 +36,7 @@ public class UIManager : MonoBehaviour
                 blockTransform.GetChild(3).TryGetComponent(out BlockQuantityText);
             }
             else
-            {
                 Debug.LogError("Block transform does not have the expected number of children.");
-            }
         }
 
         /// <summary>
@@ -47,9 +45,9 @@ public class UIManager : MonoBehaviour
         /// <param name="blockData">A BlockObjectSO containing block data.</param>
         public void SetBlockData(BlockObjectSO blockData)
         {
-            id = blockData.GetInstanceID();
+            this.blockData = blockData;
             if (BlockNameText != null)
-                BlockNameText.text = blockData.name;
+                BlockNameText.text = this.blockData.name;
             else
                 Debug.LogWarning("BlockNameText is missing.");
 
@@ -108,15 +106,13 @@ public class UIManager : MonoBehaviour
     {
         if (blockTemplate != null)
             blockTemplate.gameObject.SetActive(false);
-        else
-            Debug.LogWarning("Block template reference is missing.");
     }
 
     public void UpdateVisual(int id, int quantity)
     {
         foreach (UiBlock ui in uiBlocks)
         {
-            if (ui.id == id)
+            if (ui.blockData.id == id)
                 ui.UpdateQuantity(quantity);
         }
     }
