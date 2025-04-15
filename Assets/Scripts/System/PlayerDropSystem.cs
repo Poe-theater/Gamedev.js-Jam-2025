@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerDropSystem : MonoBehaviour
@@ -44,7 +41,7 @@ public class PlayerDropSystem : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (rb != null && rb.linearVelocity.y < 0)
+        if (rb != null && rb.linearVelocity.y < 0 && !isDragging)
         {
             float additionalGravity = (extraGravityMultiplier - 1f) * Physics.gravity.magnitude;
             rb.AddForce(Vector3.down * additionalGravity, ForceMode.Acceleration);
@@ -55,6 +52,7 @@ public class PlayerDropSystem : MonoBehaviour
     {
         block = blockTransform;
         blockTransform.TryGetComponent<Rigidbody>(out rb);
+        rb.isKinematic = true;
     }
 
     private void OnClick()
@@ -80,6 +78,7 @@ public class PlayerDropSystem : MonoBehaviour
 
         isDragging = false;
         block = null;
+        rb.isKinematic = false;
         rb.AddForce(dragVelocity * forceMultiplier, ForceMode.VelocityChange);
     }
 

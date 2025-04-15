@@ -7,7 +7,7 @@ public class PlayerManage : MonoBehaviour
 
     private void Start()
     {
-        dropSystem.yCoord = gridSystem.quadBlocker.transform.position.y + 10;
+        dropSystem.yCoord = gridSystem.quadBlocker.transform.position.y + 15;
         CreateBlock();
 
         dropSystem.OnBlockDrop += DropSystem_OnBlockDrop;
@@ -31,6 +31,10 @@ public class PlayerManage : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Z)) 
+        {
+            CreateBlock();
+        }
         dropSystem.Loop();
     }
 

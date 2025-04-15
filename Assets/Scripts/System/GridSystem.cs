@@ -14,9 +14,10 @@ public class GridSystem : MonoBehaviour
     {
         int index = UnityEngine.Random.Range(0, blocks.Count);
         Vector3 pos = quadBlocker.transform.position;
-        pos.y += 10;
+        pos.y += 15;
         Transform block = Instantiate(blocks[index].prefab, pos, Quaternion.identity, null);
         blockPlaced.Add(block);
+        ChangeBlockerStatus();
         return block;
     }
 
