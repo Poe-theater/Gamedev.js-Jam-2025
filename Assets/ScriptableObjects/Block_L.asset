@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Block_L
   m_EditorClassIdentifier: 
   prefab: {fileID: 3240259009092524935, guid: 094954d3aba67744bbd83d766ec46f9b, type: 3}
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 2525796ea0e0e14489b3e593237eb68f, type: 3}
   objectName: Orange Ricky

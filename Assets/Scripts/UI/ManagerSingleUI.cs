@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class ManagerSingleUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI blockNameText;
+    [SerializeField] private TextMeshProUGUI blockQuantityText;
     [SerializeField] private Transform iconContainer;
     [SerializeField] private Transform iconTemplate;
 
@@ -17,5 +18,10 @@ public class ManagerSingleUI : MonoBehaviour
             Destroy(child.gameObject);
         }
         iconTemplate.GetComponent<Image>().sprite = blockSO.sprite;
+    }
+
+    public void setBlockSOQuantity(int quantity)
+    {
+        blockQuantityText.text = quantity.ToString();
     }
 }
