@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Block_S
   m_EditorClassIdentifier: 
   prefab: {fileID: 4570152746657081343, guid: 3a28f59e5ab9ae8478bf2c82165be25e, type: 3}
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: dc97b853352bcd543a98c1ddff92aaab, type: 3}
   objectName: Cleveland
