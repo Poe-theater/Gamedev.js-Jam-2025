@@ -6,6 +6,7 @@ public class PlayerManage : MonoBehaviour
 {
     [SerializeField] private GridSystem gridSystem;
     [SerializeField] private PlayerDropSystem dropSystem;
+    [SerializeField] private UIManager uiManager;
 
     [SerializeField] private BlockListSO blockListSO;
     private Dictionary<BlockObjectSO, int> blockInventory = new Dictionary<BlockObjectSO, int>();
@@ -31,6 +32,7 @@ public class PlayerManage : MonoBehaviour
         if (blockInventory.ContainsKey(blockSO))
         {
             blockInventory[blockSO] += 1;
+            uiManager.UpdateVisual(blockSO.GetInstanceID(), blockInventory[blockSO]);
             Debug.Log(blockSO.name + blockInventory[blockSO]);
         }
     }
