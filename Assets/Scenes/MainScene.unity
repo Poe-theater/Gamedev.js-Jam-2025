@@ -3057,6 +3057,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 938033056988464242, guid: 991e902dba10ab140abb7d0b28aaabf7, type: 3}
+      propertyPath: pieceParent
+      value: 
+      objectReference: {fileID: 1858730715688679121}
+    - target: {fileID: 938033056988464242, guid: 991e902dba10ab140abb7d0b28aaabf7, type: 3}
+      propertyPath: extraGravityMultiplier
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 1160133094607982180, guid: 991e902dba10ab140abb7d0b28aaabf7, type: 3}
       propertyPath: m_Name
       value: Grid
@@ -3106,6 +3114,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 991e902dba10ab140abb7d0b28aaabf7, type: 3}
+--- !u!4 &1858730715688679121 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1548089913231626358, guid: 991e902dba10ab140abb7d0b28aaabf7, type: 3}
+  m_PrefabInstance: {fileID: 1858730715688679120}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2310945783763510813 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 938033056988464242, guid: 991e902dba10ab140abb7d0b28aaabf7, type: 3}
