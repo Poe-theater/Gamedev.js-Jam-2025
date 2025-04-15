@@ -4,7 +4,7 @@ public class BlockProduction : MonoBehaviour
 {
     [SerializeField] private BlockListSO blockListSO;
     [SerializeField] private float productionTimerMax;
-    [SerializeField] private PlayerManage playerManager;
+    [SerializeField] private PlayerManager playerManager;
 
     private float productionTimer;
 

@@ -5,20 +5,17 @@ using UnityEngine;
 
 public class GridSystem : MonoBehaviour
 {
-    [SerializeField] private List<BlockObjectSO> blocks;
     [SerializeField] private List<Transform> blockPlaced;
     [SerializeField] private List<Collider> colliders;
     public GameObject quadBlocker;
 
-    public Transform SpawnObject(int index2)
+    public Transform SpawnObject(Transform prefab)
     {
-        int index = UnityEngine.Random.Range(0, blocks.Count);
-        Vector3 pos = quadBlocker.transform.position;
-        pos.y += 15;
-        Transform block = Instantiate(blocks[index].prefab, pos, Quaternion.identity, null);
-        blockPlaced.Add(block);
+        blockPlaced.Add(
+            Instantiate(prefab, quadBlocker.transform.position, Quaternion.identity, null)
+            );
         ChangeBlockerStatus();
-        return block;
+        return blockPlaced[^1];
     }
 
     public void ChangeBlockerStatus() =>

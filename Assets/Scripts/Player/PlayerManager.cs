@@ -1,20 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class PlayerManage : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private GridSystem gridSystem;
     [SerializeField] private PlayerDropSystem dropSystem;
     [SerializeField] private UIManager uiManager;
-
     [SerializeField] private BlockListSO blockListSO;
-    private Dictionary<BlockObjectSO, int> blockInventory = new Dictionary<BlockObjectSO, int>();
+    [SerializeField] private Dictionary<BlockObjectSO, int> blockInventory = new();
 
     private void Start()
     {
         dropSystem.yCoord = gridSystem.quadBlocker.transform.position.y + 15;
-        CreateBlock();
         InitializeBlockInventory();
         dropSystem.OnBlockDrop += DropSystem_OnBlockDrop;
     }
@@ -37,10 +36,13 @@ public class PlayerManage : MonoBehaviour
         }
     }
 
-    [ContextMenu("create block")]
-    void CreateBlock()
+    private void RemoveFromInventory(BlockObjectSO blockSO)
     {
-        dropSystem.SetBlock(gridSystem.SpawnObject(0));
+        if (blockInventory.ContainsKey(blockSO))
+        {
+            blockInventory[blockSO] -= 1;
+            uiManager.UpdateVisual(blockSO.GetInstanceID(), blockInventory[blockSO]);
+        }
     }
 
     private void OnDisable()
@@ -55,9 +57,24 @@ public class PlayerManage : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z)) 
+        for (int i = 1; i <= 5; i++)
         {
-            CreateBlock();
+            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+            {
+                if (blockInventory.Count >= i)
+                {
+                    var entry = blockInventory.ElementAt(i - 1);
+                    if (entry.Value > 0)
+                    {
+                        RemoveFromInventory(entry.Key);
+                        dropSystem.SetBlock(gridSystem.SpawnObject(entry.Key.prefab));
+                    }
+                    else
+                        Debug.Log("Not enough blocks.");
+                }
+                else
+                    Debug.Log($"No block assigned to key {i}.");
+            }
         }
         dropSystem.Loop();
     }
