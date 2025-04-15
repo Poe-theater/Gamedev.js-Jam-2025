@@ -1653,6 +1653,7 @@ PrefabInstance:
     - {fileID: 7400476845684656129, guid: d566c8c8a0543b24598cd0fd80649dd4, type: 3}
     - {fileID: 2977741143345474447, guid: d566c8c8a0543b24598cd0fd80649dd4, type: 3}
     - {fileID: 3843714529547004005, guid: d566c8c8a0543b24598cd0fd80649dd4, type: 3}
+    - {fileID: 6842838982160851137, guid: d566c8c8a0543b24598cd0fd80649dd4, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4683800578884597811, guid: d566c8c8a0543b24598cd0fd80649dd4, type: 3}
       insertIndex: -1
@@ -3063,7 +3064,15 @@ PrefabInstance:
       objectReference: {fileID: 1858730715688679121}
     - target: {fileID: 938033056988464242, guid: 991e902dba10ab140abb7d0b28aaabf7, type: 3}
       propertyPath: extraGravityMultiplier
-      value: 8
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 974475131142730125, guid: 991e902dba10ab140abb7d0b28aaabf7, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 974475131142730125, guid: 991e902dba10ab140abb7d0b28aaabf7, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1160133094607982180, guid: 991e902dba10ab140abb7d0b28aaabf7, type: 3}
       propertyPath: m_Name
@@ -3140,9 +3149,9 @@ SceneRoots:
   - {fileID: 1858730715688679120}
   - {fileID: 540051535}
   - {fileID: 571948794}
-  - {fileID: 2026278088}
   - {fileID: 1340494765}
   - {fileID: 944429498}
+  - {fileID: 2026278088}
   - {fileID: 1837152084}
   - {fileID: 1002730696}
   - {fileID: 1230388425}

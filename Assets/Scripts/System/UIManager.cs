@@ -108,8 +108,6 @@ public class UIManager : MonoBehaviour
     {
         if (blockTemplate != null)
             blockTemplate.gameObject.SetActive(false);
-        else
-            Debug.LogWarning("Block template reference is missing.");
     }
 
     public void UpdateVisual(int id, int quantity)
