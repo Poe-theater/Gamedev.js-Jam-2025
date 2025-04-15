@@ -40,6 +40,11 @@ public class GridSystem : MonoBehaviour
                     float additionalGravityForce = (extraGravityMultiplier - 1f) * Physics.gravity.magnitude;
                     blockRb.AddForce(Vector3.down * additionalGravityForce, ForceMode.Acceleration);
                 }
+                else
+                {
+                    Renderer renderer = block.GetComponent<Renderer>();
+                    print($" renderer.bounds.max.y {renderer.bounds.max.y}");
+                }
             }
         }
     }
