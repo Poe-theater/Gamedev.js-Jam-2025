@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEditor.XR;
 
 public class GridSystem : MonoBehaviour
 {
@@ -44,8 +43,8 @@ public class GridSystem : MonoBehaviour
             {
                 if (blockRb.linearVelocity.y < 0)
                 {
-                    float additionalGravityForce = (extraGravityMultiplier - 1f) * Physics.gravity.magnitude;
-                    blockRb.AddForce(Vector3.down * additionalGravityForce, ForceMode.Acceleration);
+                    //float additionalGravityForce = (extraGravityMultiplier - 1f) * Physics.gravity.magnitude;
+                    //blockRb.AddForce(Vector3.down * additionalGravityForce, ForceMode.Acceleration);
                 }
                 else
                 {
