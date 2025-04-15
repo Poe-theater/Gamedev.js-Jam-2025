@@ -1,8 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.XR;
 
 public class GridSystem : MonoBehaviour
 {
+    //struct block
+    //{
+    //    Transform transform;
+    //    bool isPlaced;
+    //}
+
     [SerializeField] private Transform pieceParent;
     [SerializeField] private List<Transform> blockPlaced;
     [SerializeField] private float extraGravityMultiplier = 10.0f;
@@ -18,7 +25,7 @@ public class GridSystem : MonoBehaviour
     public Transform SpawnObject(Transform prefab)
     {
         Vector3 spawnPos = quadBlocker.transform.position;
-        spawnPos.y = 110;
+        spawnPos.y += 5;
         Transform newBlock = Instantiate(prefab, spawnPos, Quaternion.identity, pieceParent);
         blockPlaced.Add(newBlock);
         ChangeBlockerStatus();
@@ -42,8 +49,8 @@ public class GridSystem : MonoBehaviour
                 }
                 else
                 {
-                    Renderer renderer = block.GetComponent<Renderer>();
-                    print($" renderer.bounds.max.y {renderer.bounds.max.y}");
+                    //Renderer renderer = block.GetComponent<Renderer>();
+                    //print($" renderer.bounds.max.y {renderer.bounds.max.y}");
                 }
             }
         }

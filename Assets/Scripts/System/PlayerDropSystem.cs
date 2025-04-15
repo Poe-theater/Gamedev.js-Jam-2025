@@ -5,16 +5,16 @@ public class PlayerDropSystem : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     [SerializeField] private float forceMultiplier = 5f;
-    [SerializeField] private float yCoord;
-
-    private Vector3 offset;
-    private bool isDragging;
-    private Rigidbody rb;
-    private Vector3 previousDragPos;
-    private Vector3 dragVelocity;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private Vector3 offset;
+    [SerializeField] private bool isDragging;
+    [SerializeField] private Vector3 previousDragPos;
+    [SerializeField] private Vector3 dragVelocity;
 
     public Transform Block { get; private set; }
     public event EventHandler OnBlockDrop;
+
+    public Transform quadBlocker;
 
     /// <summary>
     /// Processes user input each frame. Checks for drag, release, and rotation inputs.
@@ -25,10 +25,8 @@ public class PlayerDropSystem : MonoBehaviour
         else if (Input.GetMouseButton(0) && isDragging) Drag();
         else if (Input.GetMouseButtonUp(0)) EndDrag();
 
-        if (Input.GetKeyDown(KeyCode.Q))
-            Block.Rotate(0, 90, 0);
-        if (Input.GetKeyDown(KeyCode.E))
-            Block.Rotate(0, 0, 90);
+        if (Input.GetKeyDown(KeyCode.Q)) Block.Rotate(0, 90, 0);
+        if (Input.GetKeyDown(KeyCode.E)) Block.Rotate(0, 0, 90);
     }
 
     /// <summary>
@@ -61,7 +59,7 @@ public class PlayerDropSystem : MonoBehaviour
     private void Drag()
     {
         Vector3 targetPos = GetMouseWorldPosition() + offset;
-        targetPos.y = 110;
+        targetPos.y = quadBlocker.position.y + 5;
         rb.MovePosition(targetPos);
 
         dragVelocity = (targetPos - previousDragPos) / Time.deltaTime;
@@ -89,7 +87,7 @@ public class PlayerDropSystem : MonoBehaviour
     private Vector3 GetMouseWorldPosition()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        Plane dragPlane = new Plane(Vector3.up, new Vector3(0, 110, 0));
+        Plane dragPlane = new (Vector3.up, new Vector3(0, quadBlocker.position.y, 0));
 
         if (dragPlane.Raycast(ray, out float distance))
             return ray.GetPoint(distance);

@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
         if (blockInventory.ContainsKey(blockSO))
         {
             blockInventory[blockSO]++;
-            uiManager.UpdateVisual(blockSO.GetInstanceID(), blockInventory[blockSO]);
+            uiManager.UpdateVisual(blockSO.id, blockInventory[blockSO]);
             Debug.Log(blockSO.name + blockInventory[blockSO]);
         }
     }
