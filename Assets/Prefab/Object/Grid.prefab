@@ -50,9 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d907bf0df5a5454292bfd9e0055dd54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockPlaced: []
-  colliders: []
   pieceParent: {fileID: 1548089913231626358}
+  blockPlaced: []
   quadBlocker: {fileID: 2338890347488869069}
 --- !u!1 &2338890347488869069
 GameObject:
@@ -65,7 +64,6 @@ GameObject:
   - component: {fileID: 8276795135199058484}
   - component: {fileID: 3712614477623930909}
   - component: {fileID: 7805525531541570201}
-  - component: {fileID: 974475131142730125}
   m_Layer: 0
   m_Name: MouseRayblocket
   m_TagString: Untagged
@@ -119,7 +117,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f5d154c3909a47d42acb0ca592304e0d, type: 2}
+  - {fileID: 2100000, guid: e32ae00542d3e164eae16c06eaf87849, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -141,28 +139,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &974475131142730125
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2338890347488869069}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &2963151216322598093
 GameObject:
   m_ObjectHideFlags: 0
