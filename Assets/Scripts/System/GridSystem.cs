@@ -3,15 +3,9 @@ using System.Collections.Generic;
 
 public class GridSystem : MonoBehaviour
 {
-    //struct block
-    //{
-    //    Transform transform;
-    //    bool isPlaced;
-    //}
 
     [SerializeField] private Transform pieceParent;
     [SerializeField] private List<Transform> blockPlaced;
-    [SerializeField] private float extraGravityMultiplier = 10.0f;
 
     public GameObject quadBlocker;
 
