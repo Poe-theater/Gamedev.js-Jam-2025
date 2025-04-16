@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class UIManager : MonoBehaviour
         public Transform IconTemplate;
         public BlockObjectSO blockData;
         
-        private Image _iconImage;
+        private UnityEngine.UI.Image _iconImage;
 
         /// <summary>
         /// Initializes the UI block by getting required component references from the provided transform.
@@ -75,10 +76,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    [SerializeField] private BlockProduction blockProduction;
     [SerializeField] private Transform container;
     [SerializeField] private Transform blockTemplate;
     [SerializeField] private BlockListSO blockListSO;
     [SerializeField] private List<UiBlock> uiBlocks = new List<UiBlock>();
+    [SerializeField] private UnityEngine.UI.Image progressBar;
+    [SerializeField] private UnityEngine.UI.Image blockIconBar;
 
     /// <summary>
     /// Sets up the visual UI blocks based on the list of block data in the BlockListSO.
@@ -102,10 +106,27 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void BlockProduction_OnProgressChanged(object sender, BlockProduction.OnProgressChangedEventArgs e)
+    {
+        progressBar.fillAmount = e.progressNormalized;
+    }
+
     private void Awake()
     {
         if (blockTemplate != null)
             blockTemplate.gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        blockIconBar.sprite = blockProduction.GetCurrentBlock().sprite;
+        blockProduction.OnProgressChanged += BlockProduction_OnProgressChanged;
+        blockProduction.OnProgressBlockChanged += BlockProduction_OnProgressBlockChanged;
+    }
+
+    private void BlockProduction_OnProgressBlockChanged(object sender, BlockProduction.OnProgressBlockChangedEventArgs e)
+    {
+        blockIconBar.sprite = e.nextRandomBlockIcon.sprite;
     }
 
     public void UpdateVisual(int id, int quantity)
