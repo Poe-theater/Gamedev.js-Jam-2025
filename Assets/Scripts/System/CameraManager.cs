@@ -3,5 +3,12 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-  
+    [SerializeField] private CinemachineCamera cineCamera;
+
+
+
+    private void LateUpdate()
+    {
+        
+    }
 }

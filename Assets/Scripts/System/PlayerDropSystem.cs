@@ -10,8 +10,8 @@ public class PlayerDropSystem : MonoBehaviour
     [SerializeField] private bool isDragging;
     [SerializeField] private Vector3 previousDragPos;
     [SerializeField] private Vector3 dragVelocity;
-
-    public Transform Block { get; private set; }
+    [SerializeField] private Transform sphere;
+    public Transform block { get; private set; }
     public event EventHandler OnBlockDrop;
 
     public Transform quadBlocker;
@@ -24,9 +24,8 @@ public class PlayerDropSystem : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) BeginDrag();
         else if (Input.GetMouseButton(0) && isDragging) Drag();
         else if (Input.GetMouseButtonUp(0)) EndDrag();
-
-        if (Input.GetKeyDown(KeyCode.Q)) Block.Rotate(0, 90, 0);
-        if (Input.GetKeyDown(KeyCode.E)) Block.Rotate(0, 0, 90);
+        if (Input.GetKeyDown(KeyCode.Q)) block.Rotate(0, 90, 0);
+        if (Input.GetKeyDown(KeyCode.E)) block.Rotate(0, 0, 90);
     }
 
     /// <summary>
@@ -35,8 +34,8 @@ public class PlayerDropSystem : MonoBehaviour
     /// <param name="newBlock">The block to manipulate.</param>
     public void SetBlock(Transform newBlock)
     {
-        Block = newBlock;
-        if (!Block.TryGetComponent(out rb))
+        block = newBlock;
+        if (!block.TryGetComponent(out rb))
             Debug.LogError("The selected block does not have a Rigidbody component.");
         else
             rb.isKinematic = true;
@@ -47,8 +46,8 @@ public class PlayerDropSystem : MonoBehaviour
     /// </summary>
     private void BeginDrag()
     {
-        offset = Block.position - GetMouseWorldPosition();
-        previousDragPos = Block.position;
+        offset = block.position - GetMouseWorldPosition();
+        previousDragPos = block.position;
         isDragging = true;
     }
 
@@ -61,6 +60,18 @@ public class PlayerDropSystem : MonoBehaviour
         Vector3 targetPos = GetMouseWorldPosition() + offset;
         targetPos.y = quadBlocker.position.y + 5;
         rb.MovePosition(targetPos);
+
+        RaycastHit hit;
+        if (Physics.Raycast(block.position, (block.TransformDirection(Vector3.down)), out hit, Mathf.Infinity))
+        {
+            if (hit.transform.CompareTag("Block"))
+            {
+                //Renderer renderer = hit.transform.GetComponent<Renderer>();
+                sphere.position = new Vector3(targetPos.x, hit.point.y, targetPos.z);
+            }
+            else
+                sphere.position = new Vector3(targetPos.x, hit.collider.transform.position.y, targetPos.z);
+        }
 
         dragVelocity = (targetPos - previousDragPos) / Time.deltaTime;
         previousDragPos = targetPos;
@@ -77,7 +88,7 @@ public class PlayerDropSystem : MonoBehaviour
         rb.isKinematic = false;
         rb.AddForce(dragVelocity * forceMultiplier, ForceMode.VelocityChange);
 
-        Block = null;
+        block = null;
     }
 
     /// <summary>
@@ -92,6 +103,6 @@ public class PlayerDropSystem : MonoBehaviour
         if (dragPlane.Raycast(ray, out float distance))
             return ray.GetPoint(distance);
 
-        return Block != null ? Block.position : Vector3.zero;
+        return block != null ? block.position : Vector3.zero;
     }
 }

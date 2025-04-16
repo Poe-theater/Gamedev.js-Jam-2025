@@ -66,7 +66,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        if (dropSystem.Block == null)
+        if (dropSystem.block == null)
         {
             for (int i = 1; i <= 5; i++)
             {
