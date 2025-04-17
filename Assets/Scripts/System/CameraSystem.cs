@@ -23,8 +23,9 @@ namespace CodeMonkey.CameraSystem {
         private Vector3 followOffset;
 
 
-        private void Awake() {
-            followOffset = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+        private void Awake() 
+        {
+           followOffset = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
         }
 
         private void Update() {
