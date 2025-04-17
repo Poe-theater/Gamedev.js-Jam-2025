@@ -19,7 +19,6 @@ public class GridSystem : MonoBehaviour
     {
         Vector3 spawnPos = quadBlocker.transform.position;
         spawnPos.y += 10;
-        quadBlocker.transform.position = spawnPos;
         Transform newBlock = Instantiate(prefab, spawnPos, Quaternion.identity, pieceParent);
         blockPlaced.Add(newBlock);
         ChangeBlockerStatus();

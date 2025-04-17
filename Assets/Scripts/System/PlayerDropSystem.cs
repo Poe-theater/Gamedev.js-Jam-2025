@@ -10,7 +10,7 @@ public class PlayerDropSystem : MonoBehaviour
     [SerializeField] private bool isDragging;
     [SerializeField] private Vector3 previousDragPos;
     [SerializeField] private Vector3 dragVelocity;
-    [SerializeField] private Transform sphere;
+    [SerializeField] private GameObject sphere;
     public Transform block { get; private set; }
     public event EventHandler OnBlockDrop;
 
@@ -46,9 +46,12 @@ public class PlayerDropSystem : MonoBehaviour
     /// </summary>
     private void BeginDrag()
     {
+        sphere.SetActive(true);
+
         offset = block.position - GetMouseWorldPosition();
         previousDragPos = block.position;
         isDragging = true;
+        SetSpherePos();
     }
 
     /// <summary>
@@ -60,19 +63,7 @@ public class PlayerDropSystem : MonoBehaviour
         Vector3 targetPos = GetMouseWorldPosition() + offset;
         targetPos.y = quadBlocker.position.y + 5;
         rb.MovePosition(targetPos);
-
-        RaycastHit hit;
-        if (Physics.Raycast(block.position, (block.TransformDirection(Vector3.down)), out hit, Mathf.Infinity))
-        {
-            if (hit.transform.CompareTag("Block"))
-            {
-                //Renderer renderer = hit.transform.GetComponent<Renderer>();
-                sphere.position = new Vector3(targetPos.x, hit.point.y, targetPos.z);
-            }
-            else
-                sphere.position = new Vector3(targetPos.x, hit.collider.transform.position.y, targetPos.z);
-        }
-
+        SetSpherePos();
         dragVelocity = (targetPos - previousDragPos) / Time.deltaTime;
         previousDragPos = targetPos;
     }
@@ -82,12 +73,12 @@ public class PlayerDropSystem : MonoBehaviour
     /// </summary>
     private void EndDrag()
     {
+        sphere.SetActive(false);
         OnBlockDrop?.Invoke(this, EventArgs.Empty);
-
+        SetSpherePos();
         isDragging = false;
         rb.isKinematic = false;
         rb.AddForce(dragVelocity * forceMultiplier, ForceMode.VelocityChange);
-
         block = null;
     }
 
@@ -105,4 +96,11 @@ public class PlayerDropSystem : MonoBehaviour
 
         return block != null ? block.position : Vector3.zero;
     }
+
+    private void SetSpherePos()
+    {
+        if (Physics.Raycast(block.position, (block.TransformDirection(Vector3.down)), out RaycastHit hit, Mathf.Infinity))
+            sphere.transform.position = hit.point;
+    }
+
 }
