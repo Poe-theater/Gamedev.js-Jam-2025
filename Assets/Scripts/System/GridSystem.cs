@@ -1,13 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class GridSystem : MonoBehaviour
 {
 
     [SerializeField] private Transform pieceParent;
     [SerializeField] private List<Transform> blockPlaced;
-
+    public event EventHandler OnGridLvUp;
     public GameObject quadBlocker;
+    public bool test = false;
 
     /// <summary>
     /// Spawns a new object based on the provided prefab. The new block is placed at the quadBlocker's position
@@ -30,6 +32,20 @@ public class GridSystem : MonoBehaviour
         {
             if (blockPlaced[i] == null)
                 blockPlaced.Remove(blockPlaced[i]);
+        }
+
+        if (blockPlaced.Count % 2 == 0 && !test)
+        {
+            Vector3 newPos = quadBlocker.transform.position;
+            newPos.y += 25;
+            quadBlocker.transform.position = newPos;
+            test = true;
+
+            OnGridLvUp?.Invoke(this, EventArgs.Empty);
+        }
+        if (blockPlaced.Count % 2 == 1)
+        {
+            test = false;
         }
     }
     /// <summary>

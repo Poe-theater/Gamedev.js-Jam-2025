@@ -14,8 +14,6 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         InitializeBlockInventory();
-        dropSystem.OnBlockDrop += HandleBlockDrop;
-        dropSystem.OnBlockGrab += DropSystem_OnBlockGrab;
     }
 
     /// <summary>
@@ -70,6 +68,7 @@ public class PlayerManager : MonoBehaviour
     {
         gridSystem.ChangeBlockerStatus();
     }
+
     private void Update()
     {
         if (dropSystem.block == null)

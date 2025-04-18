@@ -16,6 +16,7 @@ namespace CodeMonkey.CameraSystem {
         [SerializeField] private float followOffsetMax = 50f;
         [SerializeField] private float followOffsetMinY = 10f;
         [SerializeField] private float followOffsetMaxY = 50f;
+        [SerializeField] private Transform planeT;
 
         private bool dragPanMoveActive;
         private Vector2 lastMousePosition;
@@ -40,10 +41,17 @@ namespace CodeMonkey.CameraSystem {
             }
 
             HandleCameraRotation();
-
             //HandleCameraZoom_FieldOfView();
             //HandleCameraZoom_MoveForward();
             //HandleCameraZoom_LowerY();
+        }
+
+
+        public void increaseHeight()
+        {
+            Vector3 newPos = transform.position;
+            newPos.y += 25;
+            transform.position = newPos;
         }
 
         private void HandleCameraMovement() {

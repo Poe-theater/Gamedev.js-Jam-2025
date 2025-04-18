@@ -1,16 +1,32 @@
+using CodeMonkey.CameraSystem;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private GridSystem gridSystem;
+    [SerializeField] private CameraSystem cameraSystem;
+    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private PlayerDropSystem dropSystem;
+
+    private void Start()
     {
-        
+        gridSystem.OnGridLvUp += GridSystem_OnGridLvUp;
+        dropSystem.OnBlockDrop += DropSystem_OnBlockDrop; ;
+        dropSystem.OnBlockGrab += DropSystem_OnBlockGrab; ;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void DropSystem_OnBlockGrab(object sender, System.EventArgs e)
     {
-        
+
+    }
+
+    private void DropSystem_OnBlockDrop(object sender, System.EventArgs e)
+    {
+
+    }
+
+    private void GridSystem_OnGridLvUp(object sender, System.EventArgs e)
+    {
+        cameraSystem.increaseHeight();
     }
 }

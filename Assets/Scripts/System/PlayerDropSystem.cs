@@ -18,6 +18,7 @@ public class PlayerDropSystem : MonoBehaviour
     public Transform block;
     public Vector3 targetPos;
     public float distanceFromGrid = 50f;
+
     public event EventHandler OnBlockDrop;
     public event EventHandler OnBlockGrab;
 
