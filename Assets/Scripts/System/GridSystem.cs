@@ -24,31 +24,14 @@ public class GridSystem : MonoBehaviour
         ChangeBlockerStatus();
         return newBlock;
     }
-
-    /// <summary>
-    /// Applies extra gravitational force to falling blocks (blocks with negative vertical velocity)
-    /// in the fixed update loop.
-    /// </summary>
-    private void FixedUpdate()
+    private void Update()
     {
-        foreach (Transform block in blockPlaced)
+        for (int i = 0; i < blockPlaced.Count; i++)
         {
-            if (block.TryGetComponent<Rigidbody>(out Rigidbody blockRb))
-            {
-                if (blockRb.linearVelocity.y < 0)
-                {
-                    //float additionalGravityForce = (extraGravityMultiplier - 1f) * Physics.gravity.magnitude;
-                    //blockRb.AddForce(Vector3.down * additionalGravityForce, ForceMode.Acceleration);
-                }
-                else
-                {
-                    //Renderer renderer = block.GetComponent<Renderer>();
-                    //print($" renderer.bounds.max.y {renderer.bounds.max.y}");
-                }
-            }
+            if (blockPlaced[i] == null)
+                blockPlaced.Remove(blockPlaced[i]);
         }
     }
-
     /// <summary>
     /// Toggles the active status of the quadBlocker.
     /// </summary>

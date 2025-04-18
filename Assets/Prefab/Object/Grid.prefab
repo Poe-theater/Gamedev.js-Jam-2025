@@ -368,7 +368,6 @@ GameObject:
   - component: {fileID: 1848808122043445986}
   - component: {fileID: 7177374415894165833}
   - component: {fileID: 2621946357949429406}
-  - component: {fileID: 2293881425057837250}
   - component: {fileID: 1521550542132426387}
   m_Layer: 0
   m_Name: BaseQuad
@@ -445,28 +444,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2293881425057837250
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6325039889838869369}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &1521550542132426387
 MonoBehaviour:
   m_ObjectHideFlags: 0
