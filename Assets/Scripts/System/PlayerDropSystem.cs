@@ -1,8 +1,10 @@
+using Cinemachine;
 using System;
 using UnityEngine;
 
 public class PlayerDropSystem : MonoBehaviour
 {
+    [SerializeField] private Transform cameraSystem;
     [SerializeField] private Camera cam;
     [SerializeField] private float forceMultiplier = 5f;
     [SerializeField] private Rigidbody rb;
@@ -11,8 +13,11 @@ public class PlayerDropSystem : MonoBehaviour
     [SerializeField] private Vector3 previousDragPos;
     [SerializeField] private Vector3 dragVelocity;
     [SerializeField] private GameObject sphere;
+    [SerializeField] private LayerMask groundLayer;
+
     public Transform block { get; private set; }
     public event EventHandler OnBlockDrop;
+    public event EventHandler OnBlockGrab;
 
     public Transform quadBlocker;
 
@@ -24,9 +29,24 @@ public class PlayerDropSystem : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) BeginDrag();
         else if (Input.GetMouseButton(0) && isDragging) Drag();
         else if (Input.GetMouseButtonUp(0)) EndDrag();
-        if (Input.GetKeyDown(KeyCode.Q)) block.Rotate(0, 90, 0);
-        if (Input.GetKeyDown(KeyCode.E)) block.Rotate(0, 0, 90);
+        if (Input.GetKeyDown(KeyCode.Z)) block.Rotate(0, 90, 0);
+        if (Input.GetKeyDown(KeyCode.X)) block.Rotate(0, 0, 90);
     }
+
+    private void Update()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane dragPlane = new(Vector3.up, quadBlocker.position);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
+        {
+            Debug.DrawLine(ray.origin, hit.point,Color.red);
+            Vector3 bewois = hit.point;
+            bewois.y -= 50;
+            Debug.DrawLine(bewois, hit.point, Color.black);
+        }
+    }
+
 
     /// <summary>
     /// Prepares a block for dragging. Sets the block reference and caches its Rigidbody.
@@ -47,8 +67,8 @@ public class PlayerDropSystem : MonoBehaviour
     private void BeginDrag()
     {
         sphere.SetActive(true);
-
-        offset = block.position - GetMouseWorldPosition();
+        OnBlockGrab?.Invoke(this, EventArgs.Empty);
+        //offset = block.position - GetMouseWorldPosition();
         previousDragPos = block.position;
         isDragging = true;
         SetSpherePos();
@@ -60,11 +80,23 @@ public class PlayerDropSystem : MonoBehaviour
     /// </summary>
     private void Drag()
     {
-        Vector3 targetPos = GetMouseWorldPosition() + offset;
-        targetPos.y = quadBlocker.position.y + 5;
+        Vector3 targetPos = Vector3.zero;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane dragPlane = new(Vector3.up, quadBlocker.position);
+
+        if (dragPlane.Raycast(ray, out float distance))
+            targetPos = ray.GetPoint(distance);
+
+        if (block != null)
+            targetPos = block.position;
+
         rb.MovePosition(targetPos);
+        
         SetSpherePos();
+        
         dragVelocity = (targetPos - previousDragPos) / Time.deltaTime;
+        
         previousDragPos = targetPos;
     }
 
@@ -74,6 +106,11 @@ public class PlayerDropSystem : MonoBehaviour
     private void EndDrag()
     {
         sphere.SetActive(false);
+        
+        BoxCollider[] colliders = block.GetComponents<BoxCollider>();
+        foreach (var col in colliders)
+            col.enabled = true;
+
         OnBlockDrop?.Invoke(this, EventArgs.Empty);
         SetSpherePos();
         isDragging = false;
@@ -81,26 +118,11 @@ public class PlayerDropSystem : MonoBehaviour
         rb.AddForce(dragVelocity * forceMultiplier, ForceMode.VelocityChange);
         block = null;
     }
-
-    /// <summary>
-    /// Converts the current mouse position to a point in world space based on a horizontal drag plane.
-    /// </summary>
-    /// <returns>The calculated world position.</returns>
-    private Vector3 GetMouseWorldPosition()
-    {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        Plane dragPlane = new (Vector3.up, new Vector3(0, quadBlocker.position.y, 0));
-
-        if (dragPlane.Raycast(ray, out float distance))
-            return ray.GetPoint(distance);
-
-        return block != null ? block.position : Vector3.zero;
-    }
-
     private void SetSpherePos()
     {
-        if (Physics.Raycast(block.position, (block.TransformDirection(Vector3.down)), out RaycastHit hit, Mathf.Infinity))
+        Vector3 startRaycast = block.position;
+
+        if (Physics.Raycast(block.position, Vector3.down, out RaycastHit hit, Mathf.Infinity))
             sphere.transform.position = hit.point;
     }
-
 }
