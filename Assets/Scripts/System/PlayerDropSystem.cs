@@ -108,7 +108,7 @@ public class PlayerDropSystem : MonoBehaviour
     {
         Vector3 startRaycast = block.position;
 
-        if (Physics.Raycast(block.position, Vector3.down, out RaycastHit hit, Mathf.Infinity))
+        if (Physics.Raycast(block.position, Vector3.down, out RaycastHit hit, Mathf.Infinity, ~groundLayer))
             sphere.transform.position = hit.point;
     }
 }

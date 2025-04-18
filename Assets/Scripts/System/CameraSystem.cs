@@ -43,7 +43,7 @@ namespace CodeMonkey.CameraSystem {
 
             //HandleCameraZoom_FieldOfView();
             //HandleCameraZoom_MoveForward();
-            HandleCameraZoom_LowerY();
+            //HandleCameraZoom_LowerY();
         }
 
         private void HandleCameraMovement() {
