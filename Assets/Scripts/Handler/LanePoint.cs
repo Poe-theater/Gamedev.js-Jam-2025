@@ -12,6 +12,7 @@ public class LanePoint : MonoBehaviour
         {
             Vector3 newPos = collision.gameObject.transform.position;
             newPos.y = blockSnapPos.position.y;
+            newPos.z = blockSnapPos.position.z;
             collision.gameObject.transform.position = newPos;
             OnAnyCollisionEnter?.Invoke(gameObject, collision);
         }
