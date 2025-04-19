@@ -1,15 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using NUnit.Framework.Constraints;
 
 public class GridSystem : MonoBehaviour
 {
 
     [SerializeField] private Transform pieceParent;
-    [SerializeField] private List<Transform> blockPlaced;
-    public event EventHandler OnGridLvUp;
+    [SerializeField] private List<Block> blockSpawned;
+
+    private Rigidbody blockRigidbody;
+
     public GameObject quadBlocker;
-    public bool test = false;
+    public event EventHandler OnGridLvUp;
+    public event EventHandler OnSpawnObject;
 
     /// <summary>
     /// Spawns a new object based on the provided prefab. The new block is placed at the quadBlocker's position
@@ -17,39 +21,20 @@ public class GridSystem : MonoBehaviour
     /// </summary>
     /// <param name="prefab">The transform prefab to spawn.</param>
     /// <returns>The transform of the newly spawned block.</returns>
-    public Transform SpawnObject(Transform prefab)
+    public Block SpawnObject(GameObject prefab)
     {
+        OnSpawnObject?.Invoke(this, EventArgs.Empty);
+        
         Vector3 spawnPos = quadBlocker.transform.position;
         spawnPos.y += 15;
-        Transform newBlock = Instantiate(prefab, spawnPos, Quaternion.identity, pieceParent);
-        blockPlaced.Add(newBlock);
-        ChangeBlockerStatus();
-        return newBlock;
+        GameObject newBlock = Instantiate(prefab, spawnPos, Quaternion.identity, pieceParent);
+        blockSpawned.Add(newBlock.GetComponent<Block>());
+        return blockSpawned[^1];
     }
-    private void Update()
+
+    public void Update() 
     {
-        for (int i = 0; i < blockPlaced.Count; i++)
-        {
-            if (blockPlaced[i] == null)
-                blockPlaced.Remove(blockPlaced[i]);
-        }
-
-        if (blockPlaced.Count % 2 == 0 && !test)
-        {
-            Vector3 newPos = quadBlocker.transform.position;
-            newPos.y += 25;
-            quadBlocker.transform.position = newPos;
-            test = true;
-
-            OnGridLvUp?.Invoke(this, EventArgs.Empty);
-        }
-        if (blockPlaced.Count % 2 == 1)
-        {
-            test = false;
-        }
+        foreach (Block block in blockSpawned) 
+            block.UpdateStatus();
     }
-    /// <summary>
-    /// Toggles the active status of the quadBlocker.
-    /// </summary>
-    public void ChangeBlockerStatus() => quadBlocker.SetActive(!quadBlocker.activeSelf);
 }

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerDropSystem : MonoBehaviour
 {
+    public Block block;
+
     [SerializeField] private Transform cameraSystem;
     [SerializeField] private Camera cam;
     [SerializeField] private float forceMultiplier = 5f;
-    [SerializeField] private Rigidbody rb;
     [SerializeField] private Vector3 offset;
     [SerializeField] private bool isDragging;
     [SerializeField] private Vector3 previousDragPos;
@@ -15,7 +16,6 @@ public class PlayerDropSystem : MonoBehaviour
     [SerializeField] private GameObject sphere;
     [SerializeField] private LayerMask groundLayer;
 
-    public Transform block;
     public Vector3 targetPos;
     public float distanceFromGrid = 50f;
 
@@ -32,22 +32,9 @@ public class PlayerDropSystem : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) BeginDrag();
         else if (Input.GetMouseButton(0) && isDragging) Drag();
         else if (Input.GetMouseButtonUp(0)) EndDrag();
-        if (Input.GetKeyDown(KeyCode.Z)) block.Rotate(0, 90, 0);
-        if (Input.GetKeyDown(KeyCode.X)) block.Rotate(0, 0, 90);
-    }
 
-
-    /// <summary>
-    /// Prepares a block for dragging. Sets the block reference and caches its Rigidbody.
-    /// </summary>
-    /// <param name="newBlock">The block to manipulate.</param>
-    public void SetBlock(Transform newBlock)
-    {
-        block = newBlock;
-        if (!block.TryGetComponent(out rb))
-            Debug.LogError("The selected block does not have a Rigidbody component.");
-        else
-            rb.isKinematic = true;
+        if (Input.GetKeyDown(KeyCode.Z)) block.Rotate(true);
+        if (Input.GetKeyDown(KeyCode.X)) block.Rotate(false);
     }
 
     /// <summary>
@@ -57,7 +44,7 @@ public class PlayerDropSystem : MonoBehaviour
     {
         sphere.SetActive(true);
         OnBlockGrab?.Invoke(this, EventArgs.Empty);
-        previousDragPos = block.position;
+        previousDragPos = block.transform.position;
         isDragging = true;
         SetSpherePos();
     }
@@ -78,8 +65,6 @@ public class PlayerDropSystem : MonoBehaviour
             block.transform.position = blockPos;
         }
 
-        //rb.MovePosition(targetPos);
-        
         SetSpherePos();
         
         dragVelocity = (targetPos - previousDragPos) / Time.deltaTime;
@@ -92,24 +77,24 @@ public class PlayerDropSystem : MonoBehaviour
     /// </summary>
     private void EndDrag()
     {
+        block.rb.isKinematic = false;
+
+        OnBlockDrop?.Invoke(this, EventArgs.Empty);
+        
         sphere.SetActive(false);
         
         BoxCollider[] colliders = block.GetComponents<BoxCollider>();
         foreach (var col in colliders)
             col.enabled = true;
+        
+        block.rb.AddForce(dragVelocity * forceMultiplier, ForceMode.VelocityChange);
 
-        OnBlockDrop?.Invoke(this, EventArgs.Empty);
-        SetSpherePos();
-        isDragging = false;
-        rb.isKinematic = false;
-        rb.AddForce(dragVelocity * forceMultiplier, ForceMode.VelocityChange);
         block = null;
+        isDragging = false;
     }
     private void SetSpherePos()
     {
-        Vector3 startRaycast = block.position;
-
-        if (Physics.Raycast(block.position, Vector3.down, out RaycastHit hit, Mathf.Infinity, ~groundLayer))
+        if (Physics.Raycast(block.transform.position, Vector3.down, out RaycastHit hit, Mathf.Infinity, ~groundLayer))
             sphere.transform.position = hit.point;
     }
 }

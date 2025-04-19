@@ -5,6 +5,6 @@ public class BlockObjectSO : ScriptableObject
 {
     public int id;
     public Sprite sprite;
-    public Transform prefab;
+    public GameObject prefab;
     [SerializeField] private string objectName;
 }

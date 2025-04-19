@@ -47,7 +47,7 @@ namespace CodeMonkey.CameraSystem {
         }
 
 
-        public void increaseHeight()
+        public void IncreaseHeight()
         {
             Vector3 newPos = transform.position;
             newPos.y += 25;
@@ -55,7 +55,7 @@ namespace CodeMonkey.CameraSystem {
         }
 
         private void HandleCameraMovement() {
-            Vector3 inputDir = new Vector3(0, 0, 0);
+            Vector3 inputDir = new(0, 0, 0);
 
             if (Input.GetKey(KeyCode.W)) inputDir.z = +1f;
             if (Input.GetKey(KeyCode.S)) inputDir.z = -1f;
