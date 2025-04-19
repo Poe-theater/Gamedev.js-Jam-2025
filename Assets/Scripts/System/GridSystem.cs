@@ -30,8 +30,13 @@ public class GridSystem : MonoBehaviour
 
     public void Update() 
     {
-        foreach (Block block in blockSpawned) 
+        for (int i = 0; i < blockSpawned.Count; i++)
+        {
+            Block block = blockSpawned[i];
+            if (block == null)
+                blockSpawned.RemoveAt(i);
             block.UpdateStatus();
+        }
     }
 
     public int getBlockCount()
