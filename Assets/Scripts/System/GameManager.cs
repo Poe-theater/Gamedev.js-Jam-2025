@@ -8,15 +8,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private PlayerDropSystem dropSystem;
     [SerializeField] private BlockProduction blockProduction;
-    [SerializeField] private TowerDefenseSystem towerDefenseSystem;
 
     private void Start()
     {
         dropSystem.OnBlockDrop += DropSystem_OnBlockDrop;
-        dropSystem.OnBlockGrab += DropSystem_OnBlockGrab;
+        dropSystem.OnBlockGrab += DropSystem_OnBlockGrab;   
         gridSystem.OnSpawnObject += GridSystem_OnSpawnObject;
         
-        LanePoint.OnAnyCollisionEnter += LanePoint_OnAnyCollisionEnter; ;
+        LanePoint.OnAnyCollisionEnter += LanePoint_OnAnyCollisionEnter;
     }
 
     private void OnDisable()
@@ -31,7 +30,6 @@ public class GameManager : MonoBehaviour
     private void LanePoint_OnAnyCollisionEnter(GameObject arg1, Collision arg2)
     {
         gridSystem.RemoveLastBlock();
-        towerDefenseSystem.SetBlockToUnit(arg2.gameObject);
     }
 
     private void GridSystem_OnSpawnObject(object sender, System.EventArgs e)

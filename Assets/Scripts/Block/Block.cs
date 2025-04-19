@@ -1,11 +1,15 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum BlockState { JUST_SPAWNED = 0, FALLING = 1, PLACED = 2, WALKING = 3, ATTACKING = 4}
 
 [Serializable]
 public class Block : MonoBehaviour
 {
+    [SerializeField] private Transform transformDestination;
+    [SerializeField] private NavMeshAgent agent;
     public BlockState blockState;
     public Rigidbody rb;
     public Animator animator;
@@ -13,6 +17,7 @@ public class Block : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
     }
 
@@ -42,9 +47,17 @@ public class Block : MonoBehaviour
         rb.isKinematic = true;
     }
 
-    public void SetUnitMode()
+    private void Update()
+    {
+        if (agent.enabled)
+            agent.destination = transformDestination.position;
+    }
+
+    public void SetUnitMode(Transform destination)
     {
         DisableRigidBody();
         animator.enabled = true;
+        agent.enabled = true;
+        transformDestination = destination;
     }
 }
