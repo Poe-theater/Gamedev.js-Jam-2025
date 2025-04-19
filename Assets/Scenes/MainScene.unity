@@ -311,7 +311,7 @@ MonoBehaviour:
   productionTimerMax: 4
   playerManager: {fileID: 1340494766}
   gridSystem: {fileID: 1499445395332543138}
-  reductionPercentPerX: 5
+  reductionPercentPerBlock: 5
 --- !u!114 &317834111 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5534560134921909666, guid: d566c8c8a0543b24598cd0fd80649dd4, type: 3}
