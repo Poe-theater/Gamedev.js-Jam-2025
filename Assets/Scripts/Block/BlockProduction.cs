@@ -53,7 +53,8 @@ public class BlockProduction : MonoBehaviour
 
     private void SelectNewRandomBlock()
     {
-        nextRandomBlock = blockListSO.blockListSO[UnityEngine.Random.Range(0, blockListSO.blockListSO.Count)];
+        //UnityEngine.Random.Range(0, blockListSO.blockListSO.Count)
+        nextRandomBlock = blockListSO.blockListSO[2];
 
         OnProgressBlockChanged?.Invoke(this, new OnProgressBlockChangedEventArgs
         {

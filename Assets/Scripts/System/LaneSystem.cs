@@ -5,7 +5,8 @@ using UnityEngine;
 public class LaneSystem : MonoBehaviour
 {
     [SerializeField] private List<Block> unit;
-    [SerializeField] private Transform destination;
+    [SerializeField] private Transform[] leftDestination;
+    [SerializeField] private Transform[] rightDestination;
 
 
     private void Start()
@@ -18,11 +19,12 @@ public class LaneSystem : MonoBehaviour
         LanePoint.OnAnyCollisionEnter -= LanePoint_OnAnyCollisionEnter;
     }
 
-    private void LanePoint_OnAnyCollisionEnter(GameObject @object, Collision collision)
+
+    private void LanePoint_OnAnyCollisionEnter((int, bool) tuple, Collision collision)
     {
         if (collision.gameObject.TryGetComponent<Block>(out Block block))
         {
-            block.SetUnitMode(destination);
+            block.SetUnitMode(leftDestination[tuple.Item1]);
             unit.Add(block);
             Debug.Log("added block to unit");
         }

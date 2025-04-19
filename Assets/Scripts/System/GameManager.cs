@@ -1,4 +1,5 @@
 using CodeMonkey.CameraSystem;
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
         LanePoint.OnAnyCollisionEnter -= LanePoint_OnAnyCollisionEnter;
     }
 
-    private void LanePoint_OnAnyCollisionEnter(GameObject arg1, Collision arg2)
+    private void LanePoint_OnAnyCollisionEnter((int, bool) tuple, Collision collision)
     {
         gridSystem.RemoveLastBlock();
     }

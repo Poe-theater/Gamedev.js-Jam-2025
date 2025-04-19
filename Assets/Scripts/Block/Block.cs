@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,6 +9,7 @@ public class Block : MonoBehaviour
 {
     [SerializeField] private Transform transformDestination;
     [SerializeField] private NavMeshAgent agent;
+    public float initialX;
     public BlockState blockState;
     public Rigidbody rb;
     public Animator animator;
@@ -19,6 +19,8 @@ public class Block : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        initialX = transform.eulerAngles.x;
+        agent.updateUpAxis = false;        // stop slope alignment
     }
 
     public void UpdateStatus()
@@ -49,12 +51,14 @@ public class Block : MonoBehaviour
 
     private void Update()
     {
-        if (agent.enabled)
+        if (agent.enabled && transformDestination)
             agent.destination = transformDestination.position;
     }
 
     public void SetUnitMode(Transform destination)
     {
+        blockState = BlockState.WALKING;
+
         DisableRigidBody();
         animator.enabled = true;
         agent.enabled = true;
