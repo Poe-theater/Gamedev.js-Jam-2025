@@ -7,7 +7,7 @@ public class BlockProduction : MonoBehaviour
     [SerializeField] private float productionTimerMax;
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private GridSystem gridSystem;
-    [SerializeField] private float reductionPercentPerBlock;
+    [SerializeField] private float reductionPercentPerX;
 
     private BlockObjectSO nextRandomBlock;
     private float productionTimer;
@@ -74,6 +74,7 @@ public class BlockProduction : MonoBehaviour
             productionTimerMax = baseProductionTimerMax;
             return;
         }
+        float reductionPercentPerBlock = 0.5f; 
 
         float reductionFactorPerBlock = 1f - (reductionPercentPerBlock / 100f);
         float totalReductionFactor = Mathf.Pow(reductionFactorPerBlock, totalBlocks);

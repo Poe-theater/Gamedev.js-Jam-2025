@@ -12,17 +12,26 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        gridSystem.OnSpawnObject += GridSystem_OnSpawnObject;
-        gridSystem.OnGridLvUp += GridSystem_OnGridLvUp;
         dropSystem.OnBlockDrop += DropSystem_OnBlockDrop;
         dropSystem.OnBlockGrab += DropSystem_OnBlockGrab;
+        gridSystem.OnSpawnObject += GridSystem_OnSpawnObject;
+        
+        LanePoint.OnAnyCollisionEnter += LanePoint_OnAnyCollisionEnter; ;
     }
 
     private void OnDisable()
     {
-        gridSystem.OnGridLvUp -= GridSystem_OnGridLvUp;
         dropSystem.OnBlockDrop -= DropSystem_OnBlockDrop;
         dropSystem.OnBlockGrab -= DropSystem_OnBlockGrab;
+        gridSystem.OnSpawnObject -= GridSystem_OnSpawnObject;
+        
+        LanePoint.OnAnyCollisionEnter -= LanePoint_OnAnyCollisionEnter;
+    }
+
+    private void LanePoint_OnAnyCollisionEnter(GameObject arg1, Collision arg2)
+    {
+        gridSystem.RemoveLastBlock();
+        towerDefenseSystem.SetBlockToUnit(arg2.gameObject);
     }
 
     private void GridSystem_OnSpawnObject(object sender, System.EventArgs e)

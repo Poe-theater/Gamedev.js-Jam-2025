@@ -33,7 +33,6 @@ public class PlayerManager : MonoBehaviour
         {
             blockInventory[blockSO]++;
             uiManager.UpdateVisual(blockSO.id, blockInventory[blockSO]);
-            Debug.Log(blockSO.name + blockInventory[blockSO]);
         }
     }
 
