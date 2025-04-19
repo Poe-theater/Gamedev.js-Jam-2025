@@ -6,9 +6,12 @@ public class BlockProduction : MonoBehaviour
     [SerializeField] private BlockListSO blockListSO;
     [SerializeField] private float productionTimerMax;
     [SerializeField] private PlayerManager playerManager;
-    private BlockObjectSO nextRandomBlock;
+    [SerializeField] private GridSystem gridSystem;
+    [SerializeField] private float reductionPercentPerX;
 
+    private BlockObjectSO nextRandomBlock;
     private float productionTimer;
+    private float baseProductionTimerMax;
 
     public event EventHandler<OnProgressChangedEventArgs> OnProgressChanged;
     public class OnProgressChangedEventArgs : EventArgs
@@ -23,8 +26,8 @@ public class BlockProduction : MonoBehaviour
     }
 
     private void Awake()
-    { 
-
+    {
+        baseProductionTimerMax = productionTimerMax;
         productionTimer = productionTimerMax;
         SelectNewRandomBlock();
     }
@@ -41,7 +44,7 @@ public class BlockProduction : MonoBehaviour
 
         if (productionTimer < 0f)
         {
-
+            UpdateProductionTimerMax();
             productionTimer = productionTimerMax;
             playerManager.AddToInventory(nextRandomBlock);
             SelectNewRandomBlock();
@@ -61,6 +64,24 @@ public class BlockProduction : MonoBehaviour
     public BlockObjectSO GetCurrentBlock()
     {
         return nextRandomBlock;
+    }
+
+    private void UpdateProductionTimerMax()
+    {
+        int totalBlocks = gridSystem.getBlockCount();
+        if (totalBlocks <= 0)
+        {
+            productionTimerMax = baseProductionTimerMax;
+            return;
+        }
+        float reductionPercentPerBlock = 0.5f; 
+
+        float reductionFactorPerBlock = 1f - (reductionPercentPerBlock / 100f);
+        float totalReductionFactor = Mathf.Pow(reductionFactorPerBlock, totalBlocks);
+
+        productionTimerMax = baseProductionTimerMax * totalReductionFactor;
+
+        productionTimerMax = Mathf.Max(productionTimerMax, 1f);
     }
 }
 

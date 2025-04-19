@@ -37,4 +37,7 @@ public class GridSystem : MonoBehaviour
         foreach (Block block in blockSpawned) 
             block.UpdateStatus();
     }
+
+    public int getBlockCount()
+    { return blockSpawned.Count; }
 }
