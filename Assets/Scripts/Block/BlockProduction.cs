@@ -54,7 +54,8 @@ public class BlockProduction : MonoBehaviour
     private void SelectNewRandomBlock()
     {
         //UnityEngine.Random.Range(0, blockListSO.blockListSO.Count)
-        nextRandomBlock = blockListSO.blockListSO[2];
+        nextRandomBlock = blockListSO.blockListSO[UnityEngine.Random.Range(0, blockListSO.blockListSO.Count)];
+        //nextRandomBlock = blockListSO.blockListSO[0];
 
         OnProgressBlockChanged?.Invoke(this, new OnProgressBlockChangedEventArgs
         {
@@ -69,15 +70,14 @@ public class BlockProduction : MonoBehaviour
 
     private void UpdateProductionTimerMax()
     {
-        int totalBlocks = gridSystem.getBlockCount();
-        if (totalBlocks <= 0)
+        if (gridSystem.BlockCount <= 0)
         {
             productionTimerMax = baseProductionTimerMax;
             return;
         }
 
         float reductionFactorPerBlock = 1f - (reductionPercentPerBlock / 100f);
-        float totalReductionFactor = Mathf.Pow(reductionFactorPerBlock, totalBlocks);
+        float totalReductionFactor = Mathf.Pow(reductionFactorPerBlock, gridSystem.BlockCount);
 
         productionTimerMax = baseProductionTimerMax * totalReductionFactor;
 

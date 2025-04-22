@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
         dropSystem.OnBlockDrop += DropSystem_OnBlockDrop;
         dropSystem.OnBlockGrab += DropSystem_OnBlockGrab;   
         gridSystem.OnSpawnObject += GridSystem_OnSpawnObject;
-        
+        gridSystem.OnGridLvUp += GridSystem_OnGridLvUp;
+
         LanePoint.OnAnyCollisionEnter += LanePoint_OnAnyCollisionEnter;
     }
 
@@ -24,7 +25,8 @@ public class GameManager : MonoBehaviour
         dropSystem.OnBlockDrop -= DropSystem_OnBlockDrop;
         dropSystem.OnBlockGrab -= DropSystem_OnBlockGrab;
         gridSystem.OnSpawnObject -= GridSystem_OnSpawnObject;
-        
+        gridSystem.OnGridLvUp -= GridSystem_OnGridLvUp;
+
         LanePoint.OnAnyCollisionEnter -= LanePoint_OnAnyCollisionEnter;
     }
 

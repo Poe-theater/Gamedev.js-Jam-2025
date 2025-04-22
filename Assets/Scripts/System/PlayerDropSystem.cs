@@ -22,8 +22,6 @@ public class PlayerDropSystem : MonoBehaviour
     public event EventHandler OnBlockDrop;
     public event EventHandler OnBlockGrab;
 
-    public Transform quadBlocker;
-
     /// <summary>
     /// Processes user input each frame. Checks for drag, release, and rotation inputs.
     /// </summary>
@@ -92,6 +90,7 @@ public class PlayerDropSystem : MonoBehaviour
         block = null;
         isDragging = false;
     }
+    
     private void SetSpherePos()
     {
         if (Physics.Raycast(block.transform.position, Vector3.down, out RaycastHit hit, Mathf.Infinity, ~groundLayer))

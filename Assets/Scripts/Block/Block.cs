@@ -20,7 +20,8 @@ public class Block : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         initialX = transform.eulerAngles.x;
-        agent.updateUpAxis = false;        // stop slope alignment
+        agent.updateUpAxis = false;
+        agent.updateRotation = false;
     }
 
     public void UpdateStatus()
