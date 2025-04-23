@@ -3,113 +3,82 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviour
 {
     [Serializable]
     public struct UiBlock
     {
-        public TextMeshProUGUI BlockNameText;
-        public TextMeshProUGUI BlockQuantityText;
-        public Transform IconContainer;
-        public Transform IconTemplate;
-        public BlockObjectSO blockData;
-        
-        private UnityEngine.UI.Image _iconImage;
+        private Image iconImage;
 
-        /// <summary>
-        /// Initializes the UI block by getting required component references from the provided transform.
-        /// </summary>
-        /// <param name="blockTransform">The transform representing the block.</param>
+        public TextMeshProUGUI blockNameText;
+        public TextMeshProUGUI blockQuantityText;
+        public Transform iconContainer;
+        public Transform iconTemplate;
+        public BlockObjectSO blockData;
+
         public void Initialize(Transform blockTransform)
         {
-            if (blockTransform.childCount >= 4)
+            if (blockTransform.childCount < 4)
             {
-                blockTransform.GetChild(1).TryGetComponent(out BlockNameText);
-                blockTransform.GetChild(2).TryGetComponent(out IconContainer);
-
-                if (IconContainer.childCount > 0)
-                {
-                    IconTemplate = IconContainer.GetChild(0);
-                    IconTemplate.TryGetComponent(out _iconImage);
-                }
-                blockTransform.GetChild(3).TryGetComponent(out BlockQuantityText);
+                Debug.LogError("Block transform missing expected children.");
+                return;
             }
-            else
-                Debug.LogError("Block transform does not have the expected number of children.");
+
+            blockNameText = blockTransform.GetChild(1).GetComponent<TextMeshProUGUI>();
+            iconContainer = blockTransform.GetChild(2);
+            if (iconContainer.childCount > 0)
+            {
+                iconTemplate = iconContainer.GetChild(0);
+                iconImage = iconTemplate.GetComponent<Image>();
+            }
+            blockQuantityText = blockTransform.GetChild(3).GetComponent<TextMeshProUGUI>();
         }
 
-        /// <summary>
-        /// Sets the block data (name and icon) using the provided BlockObjectSO.
-        /// </summary>
-        /// <param name="blockData">A BlockObjectSO containing block data.</param>
-        public void SetBlockData(BlockObjectSO blockData)
+        public void SetBlockData(BlockObjectSO newBlockData)
         {
-            this.blockData = blockData;
-            if (BlockNameText != null)
-                BlockNameText.text = this.blockData.name;
+            blockData = newBlockData;
+            if (blockNameText != null)
+                blockNameText.text = blockData.name;
             else
-                Debug.LogWarning("BlockNameText is missing.");
+                Debug.LogWarning("blockNameText is null.");
 
-            for (int i = IconContainer.childCount - 1; i >= 0; i--)
-            {
-                Transform child = IconContainer.GetChild(i);
-                if (child != IconTemplate)
-                    Destroy(child.gameObject);
-            }
-
-            if (_iconImage != null)
-                _iconImage.sprite = blockData.sprite;
+            if (iconImage != null)
+                iconImage.sprite = blockData.sprite;
             else
-                Debug.LogWarning("IconImage component is missing on the IconTemplate.");
+                Debug.LogWarning("iconImage is missing on template.");
         }
 
-        /// <summary>
-        /// Updates the quantity text displayed in the block.
-        /// </summary>
-        /// <param name="quantity">The quantity to display.</param>
         public void UpdateQuantity(int quantity)
         {
-            if (BlockQuantityText != null) BlockQuantityText.text = quantity.ToString();
-            else Debug.LogWarning("BlockQuantityText is missing.");
+            if (blockQuantityText != null)
+                blockQuantityText.text = quantity.ToString();
+            else
+                Debug.LogWarning("blockQuantityText is null.");
         }
     }
 
+    #region variable 
+
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button optionsButton;
+    [SerializeField] private Button quitButton;
+    [SerializeField] private GameObject buttonContainer;
+    [SerializeField] private GameObject titleText;
+
+    [SerializeField] private GameObject gameplayUi;
     [SerializeField] private BlockProduction blockProduction;
-    [SerializeField] private Transform container;
+    [SerializeField] private Transform blocksContainer;
     [SerializeField] private Transform blockTemplate;
-    [SerializeField] private BlockListSO blockListSO;
-    [SerializeField] private List<UiBlock> uiBlocks = new List<UiBlock>();
-    [SerializeField] private UnityEngine.UI.Image progressBar;
-    [SerializeField] private UnityEngine.UI.Image blockIconBar;
+    [SerializeField] private BlockListSO blockListSo;
+    [SerializeField] private List<UiBlock> uiBlocks;
 
-    /// <summary>
-    /// Sets up the visual UI blocks based on the list of block data in the BlockListSO.
-    /// This method can be called from the Unity Editor context menu.
-    /// </summary>
-    [ContextMenu("Setup Visual")]
-    private void SetupVisual()
-    {
-        uiBlocks.Clear();
-        Debug.Log("Setting up UI blocks visual.");
+    [SerializeField] private Image progressBar;
+    [SerializeField] private Image blockIconBar;
 
-        foreach (BlockObjectSO blockData in blockListSO.blockListSO)
-        {
-            Transform newBlockTransform = Instantiate(blockTemplate, container);
-            newBlockTransform.gameObject.SetActive(true);
+    #endregion
 
-            UiBlock newUiBlock = new UiBlock();
-            newUiBlock.Initialize(newBlockTransform);
-            newUiBlock.SetBlockData(blockData);
-            uiBlocks.Add(newUiBlock);
-        }
-    }
-
-    private void BlockProduction_OnProgressChanged(object sender, BlockProduction.OnProgressChangedEventArgs e)
-    {
-        progressBar.fillAmount = e.progressNormalized;
-    }
+    #region MonoBehaviour function
 
     private void Awake()
     {
@@ -119,22 +88,101 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        blockIconBar.sprite = blockProduction.GetCurrentBlock().sprite;
-        blockProduction.OnProgressChanged += BlockProduction_OnProgressChanged;
-        blockProduction.OnProgressBlockChanged += BlockProduction_OnProgressBlockChanged;
+        ConfigureButtons();
     }
 
-    private void BlockProduction_OnProgressBlockChanged(object sender, BlockProduction.OnProgressBlockChangedEventArgs e)
+    private void OnDisable()
     {
-        blockIconBar.sprite = e.nextRandomBlockIcon.sprite;
+        blockProduction.OnProgressChanged -= HandleProgressChanged;
+        blockProduction.OnProgressBlockChanged -= HandleProgressBlockChanged;
+    }
+
+    #endregion
+
+    #region MainMenu
+    private void ConfigureButtons()
+    {
+        startButton.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlayButtonClick();
+            GameManager.Instance.SetGameState(GameState.Playing);
+            EnterPlayMode();
+        });
+
+        optionsButton.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlayButtonClick();
+            GameManager.Instance.SetGameState(GameState.Options);
+        });
+
+        quitButton.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlayButtonClick();
+            GameManager.Instance.SetGameState(GameState.Quit);
+        });
+    }
+
+    private void EnterPlayMode()
+    {
+        buttonContainer.SetActive(false);
+        titleText.SetActive(false);
+        gameplayUi.SetActive(true);
+        SubscribeToProduction();
+    }
+
+    #endregion
+
+    #region Gameplay ui
+
+    private void SubscribeToProduction()
+    {
+        blockIconBar.sprite = blockProduction.GetCurrentBlock().sprite;
+        blockProduction.OnProgressChanged += HandleProgressChanged;
+        blockProduction.OnProgressBlockChanged += HandleProgressBlockChanged;
+    }
+
+    [ContextMenu("SetupVisualBlocks")]
+    private void SetupVisualBlocks()
+    {
+        uiBlocks.Clear();
+        foreach (var block in blockListSo.blockListSO)
+        {
+            var newTransform = Instantiate(blockTemplate, blocksContainer);
+            newTransform.gameObject.SetActive(true);
+
+            UiBlock uiBlock = new UiBlock();
+            uiBlock.Initialize(newTransform);
+            uiBlock.SetBlockData(block);
+            uiBlocks.Add(uiBlock);
+        }
+    }
+
+    private void HandleProgressChanged(object sender, float progress)
+    {
+        progressBar.fillAmount = progress;
+    }
+
+    private void HandleProgressBlockChanged(object sender, BlockObjectSO newBlock)
+    {
+        blockIconBar.sprite = newBlock.sprite;
     }
 
     public void UpdateVisual(int id, int quantity)
     {
-        foreach (UiBlock ui in uiBlocks)
+        print("acc su ");
+
+        foreach (var uiBlock in uiBlocks)
         {
-            if (ui.blockData.id == id)
-                ui.UpdateQuantity(quantity);
+            print("fino su ");
+
+            if (uiBlock.blockData.id == id)
+            {
+                print("palese");
+                uiBlock.UpdateQuantity(quantity);
+                break;
+            }
         }
     }
+
+    #endregion
 }

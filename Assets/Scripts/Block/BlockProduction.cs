@@ -13,18 +13,10 @@ public class BlockProduction : MonoBehaviour
     private float productionTimer;
     private float baseProductionTimerMax;
 
-    public event EventHandler<OnProgressChangedEventArgs> OnProgressChanged;
-    public class OnProgressChangedEventArgs : EventArgs
-    {
-        public float progressNormalized;
-    }
+    public event EventHandler<float> OnProgressChanged;
+    public event EventHandler<BlockObjectSO> OnProgressBlockChanged;
 
-    public event EventHandler<OnProgressBlockChangedEventArgs> OnProgressBlockChanged;
-    public class OnProgressBlockChangedEventArgs : EventArgs
-    {
-        public BlockObjectSO nextRandomBlockIcon;
-    }
-
+    [SerializeField] private bool isStarted = false;
     private void Awake()
     {
         baseProductionTimerMax = productionTimerMax;
@@ -34,33 +26,32 @@ public class BlockProduction : MonoBehaviour
 
     private void Update()
     {
-
-        productionTimer -= Time.deltaTime;
-
-        OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs
+        if (isStarted) 
         {
-            progressNormalized = 1 - (productionTimer / productionTimerMax)
-        });
+            productionTimer -= Time.deltaTime;
 
-        if (productionTimer < 0f)
-        {
-            UpdateProductionTimerMax();
-            productionTimer = productionTimerMax;
-            playerManager.AddToInventory(nextRandomBlock);
-            SelectNewRandomBlock();
+            OnProgressChanged?.Invoke(this, 1 - (productionTimer / productionTimerMax));
+
+            if (productionTimer < 0f)
+            {
+                UpdateProductionTimerMax();
+                productionTimer = productionTimerMax;
+                print("pistole");
+                playerManager.AddToInventory(nextRandomBlock);
+                SelectNewRandomBlock();
+            }
         }
+    }
+
+    public void ActiveProduction()
+    {
+        isStarted = true;
     }
 
     private void SelectNewRandomBlock()
     {
-        //UnityEngine.Random.Range(0, blockListSO.blockListSO.Count)
         nextRandomBlock = blockListSO.blockListSO[UnityEngine.Random.Range(0, blockListSO.blockListSO.Count)];
-        //nextRandomBlock = blockListSO.blockListSO[0];
-
-        OnProgressBlockChanged?.Invoke(this, new OnProgressBlockChangedEventArgs
-        {
-            nextRandomBlockIcon = nextRandomBlock
-        });
+        OnProgressBlockChanged?.Invoke(this, nextRandomBlock);
     }
 
     public BlockObjectSO GetCurrentBlock()

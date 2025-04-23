@@ -18,6 +18,10 @@ namespace CodeMonkey.CameraSystem {
         [SerializeField] private float followOffsetMaxY = 50f;
         [SerializeField] private Transform planeT;
 
+        [SerializeField] private GameObject mainMenuCamera;
+        [SerializeField] private GameObject gameplayCamera;
+        [SerializeField] private Transform cameraTarget;
+
         private bool dragPanMoveActive;
         private Vector2 lastMousePosition;
         private float targetFieldOfView = 50;
@@ -32,7 +36,8 @@ namespace CodeMonkey.CameraSystem {
         private void Update() {
             HandleCameraMovement();
 
-            if (useEdgeScrolling) {
+            if (useEdgeScrolling) 
+            {
                 HandleCameraMovementEdgeScrolling();
             }
 
@@ -47,11 +52,29 @@ namespace CodeMonkey.CameraSystem {
         }
 
 
+        public void SwitchCamera(GameState gameState)
+        {
+            if (gameState == GameState.Playing)
+            {
+                cameraTarget = gameplayCamera.transform.GetChild(1);
+
+                gameplayCamera.SetActive(true);
+                mainMenuCamera.SetActive(false);
+            }
+            else if (gameState == GameState.MainMenu)
+            {
+                cameraTarget = mainMenuCamera.transform.GetChild(1);
+
+                mainMenuCamera.SetActive(true);
+                gameplayCamera.SetActive(false);
+            }
+        }
+
         public void IncreaseHeight()
         {
-            Vector3 newPos = transform.position;
+            Vector3 newPos = cameraTarget.position;
             newPos.y += 25;
-            transform.position = newPos;
+            cameraTarget.position = newPos;
         }
 
         private void HandleCameraMovement() {
@@ -62,10 +85,10 @@ namespace CodeMonkey.CameraSystem {
             if (Input.GetKey(KeyCode.A)) inputDir.x = -1f;
             if (Input.GetKey(KeyCode.D)) inputDir.x = +1f;
 
-            Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
+            Vector3 moveDir = cameraTarget.forward * inputDir.z + cameraTarget.right * inputDir.x;
 
             float moveSpeed = 50f;
-            transform.position += moveDir * moveSpeed * Time.deltaTime;
+            cameraTarget.position += moveDir * moveSpeed * Time.deltaTime;
         }
 
         private void HandleCameraMovementEdgeScrolling() {
@@ -86,10 +109,10 @@ namespace CodeMonkey.CameraSystem {
                 inputDir.z = +1f;
             }
 
-            Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
+            Vector3 moveDir = cameraTarget.forward * inputDir.z + cameraTarget.right * inputDir.x;
 
             float moveSpeed = 50f;
-            transform.position += moveDir * moveSpeed * Time.deltaTime;
+            cameraTarget.position += moveDir * moveSpeed * Time.deltaTime;
         }
 
         private void HandleCameraMovementDragPan() {
@@ -113,10 +136,10 @@ namespace CodeMonkey.CameraSystem {
                 lastMousePosition = Input.mousePosition;
             }
 
-            Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
+            Vector3 moveDir = cameraTarget.forward * inputDir.z + cameraTarget.right * inputDir.x;
 
             float moveSpeed = 50f;
-            transform.position += moveDir * moveSpeed * Time.deltaTime;
+            cameraTarget.position += moveDir * moveSpeed * Time.deltaTime;
         }
 
         private void HandleCameraRotation() {
@@ -125,7 +148,7 @@ namespace CodeMonkey.CameraSystem {
             if (Input.GetKey(KeyCode.E)) rotateDir = -1f;
 
             float rotateSpeed = 100f;
-            transform.eulerAngles += new Vector3(0, rotateDir * rotateSpeed * Time.deltaTime, 0);
+            cameraTarget.eulerAngles += new Vector3(0, rotateDir * rotateSpeed * Time.deltaTime, 0);
         }
 
         private void HandleCameraZoom_FieldOfView() {
