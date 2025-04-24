@@ -169,15 +169,11 @@ public class UIManager : MonoBehaviour
 
     public void UpdateVisual(int id, int quantity)
     {
-        print("acc su ");
-
         foreach (var uiBlock in uiBlocks)
         {
-            print("fino su ");
 
             if (uiBlock.blockData.id == id)
             {
-                print("palese");
                 uiBlock.UpdateQuantity(quantity);
                 break;
             }
