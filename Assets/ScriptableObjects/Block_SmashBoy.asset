@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7233a1b6669809e42bb88438e2e92191, type: 3}
   m_Name: Block_SmashBoy
   m_EditorClassIdentifier: 
-  id: 0
-  sprite: {fileID: 0}
-  prefab: {fileID: 0}
-  objectName: 
+  id: 4
+  sprite: {fileID: 21300000, guid: 996e7a702bea43b478d8a94b09479741, type: 3}
+  prefab: {fileID: 7867586793897767936, guid: 39ee349d1cb6be942bfbe7e5c4c41346, type: 3}
+  objectName: smash_boy
