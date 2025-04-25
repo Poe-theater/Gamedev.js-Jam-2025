@@ -52,6 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformDestination: {fileID: 0}
   agent: {fileID: 0}
+  initialX: 0
   blockState: 0
   rb: {fileID: 5387605620355353064}
   animator: {fileID: -6279948100602610581}
