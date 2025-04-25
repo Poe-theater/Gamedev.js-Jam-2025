@@ -53,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformDestination: {fileID: 0}
   agent: {fileID: 0}
+  initialX: 0
   blockState: 0
   rb: {fileID: -4512321938540042846}
   animator: {fileID: 4184982716703691944}
@@ -63,7 +64,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2653216513148400403}
-  m_Mesh: {fileID: -1363984346431594467, guid: 50fbe3789d445d143843e04e5af1ee53, type: 3}
+  m_Mesh: {fileID: 5966080182452678138, guid: ee460363292f0f044ac97f02843123aa, type: 3}
 --- !u!23 &4203778021533856764
 MeshRenderer:
   m_ObjectHideFlags: 0
