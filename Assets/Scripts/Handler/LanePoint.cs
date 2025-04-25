@@ -12,11 +12,9 @@ public class LanePoint : MonoBehaviour
             if (collision.gameObject.TryGetComponent<Block>(out Block block))
             {
                 block.SetUnitMode(destination);
-                Debug.Log("added block to unit");
             }
             else
             {
-                Debug.Log("test");
             }
         }
     }
