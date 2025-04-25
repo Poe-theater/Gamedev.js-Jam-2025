@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 2471160806266560112}
   - component: {fileID: 6765956601016105999}
   - component: {fileID: 2407449521638810006}
-  - component: {fileID: 7583875795459408528}
   - component: {fileID: 6346902488651325323}
   - component: {fileID: 5641646281429589742}
   - component: {fileID: 1702402270583001474}
+  - component: {fileID: 1271311302471174825}
   m_Layer: 0
   m_Name: BlockL
   m_TagString: Block
@@ -32,13 +32,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3601328823100747187}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: -1, y: 0, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: -180}
 --- !u!114 &7400679506059157916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,7 +64,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3601328823100747187}
-  m_Mesh: {fileID: -781741386748770046, guid: 1688175e0c4d4e946afce66ec1e98eb8, type: 3}
+  m_Mesh: {fileID: -2432090755550338912, guid: f3f7f8afae151584d947fc60093e9f29, type: 3}
 --- !u!23 &6765956601016105999
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -88,7 +88,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77bc9d847876efa4aad98a4cdcf0ed59, type: 2}
+  - {fileID: 2100000, guid: f33751b73c6aeb045acd9ace58ed83b6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -137,28 +137,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!195 &7583875795459408528
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3601328823100747187}
-  m_Enabled: 0
-  m_AgentTypeID: 0
-  m_Radius: 0.20000002
-  m_Speed: 40
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 0.74
-  m_BaseOffset: -0.01
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!95 &6346902488651325323
 Animator:
   serializedVersion: 7
@@ -223,3 +201,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8.485609, y: 4.2464557, z: 4.242805}
   m_Center: {x: -14.231787, y: 2.1232274, z: -0.00000047683716}
+--- !u!195 &1271311302471174825
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3601328823100747187}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 4.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 18.73
+  m_BaseOffset: -6.85
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

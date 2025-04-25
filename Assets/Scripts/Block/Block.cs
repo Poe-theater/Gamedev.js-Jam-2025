@@ -52,6 +52,18 @@ public class Block : MonoBehaviour
 
     private void Update()
     {
+        RaycastHit hit;
+        Vector3 direction = agent.steeringTarget - transform.position;
+
+        if (Physics.Raycast(transform.position, direction, out hit, 100f))
+        {
+            Debug.DrawLine(transform.position, hit.point, Color.red);
+            if (hit.collider)
+            {
+                //animator.SetTrigger("Attack");
+            }
+        }
+
         if (agent.enabled && transformDestination)
             agent.destination = transformDestination.position;
     }
@@ -63,6 +75,7 @@ public class Block : MonoBehaviour
         DisableRigidBody();
         animator.enabled = true;
         agent.enabled = true;
+        animator.SetBool("IsWalking", true);
         transformDestination = destination;
     }
 }
