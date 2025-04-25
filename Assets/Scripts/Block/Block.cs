@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -50,19 +51,23 @@ public class Block : MonoBehaviour
         rb.isKinematic = true;
     }
 
+
     private void Update()
     {
         RaycastHit hit;
-        Vector3 direction = agent.steeringTarget - transform.position;
+        Vector3 direction = agent.destination - transform.position;
 
-        if (Physics.Raycast(transform.position, direction, out hit, 100f))
-        {
-            Debug.DrawLine(transform.position, hit.point, Color.red);
-            if (hit.collider)
-            {
-                //animator.SetTrigger("Attack");
-            }
-        }
+        Debug.DrawLine(transform.position, direction, Color.red);
+
+        //if (Physics.Raycast(transform.position, transform.forward, out hit, 100f))
+        //{
+        //    Debug.DrawLine(transform.position, hit.point, Color.red);
+        //    if (hit.collider)
+        //    {
+        //        print($"hitttattoatoaotatotoa {hit.collider.gameObject.name}");
+        //        //animator.SetTrigger("Attack");
+        //    }
+        //}
 
         if (agent.enabled && transformDestination)
             agent.destination = transformDestination.position;
@@ -70,12 +75,12 @@ public class Block : MonoBehaviour
 
     public void SetUnitMode(Transform destination)
     {
+        transformDestination = destination;
         blockState = BlockState.WALKING;
 
         DisableRigidBody();
         animator.enabled = true;
         agent.enabled = true;
         animator.SetBool("IsWalking", true);
-        transformDestination = destination;
     }
 }

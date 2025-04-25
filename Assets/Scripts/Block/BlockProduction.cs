@@ -36,7 +36,6 @@ public class BlockProduction : MonoBehaviour
             {
                 UpdateProductionTimerMax();
                 productionTimer = productionTimerMax;
-                print("pistole");
                 playerManager.AddToInventory(nextRandomBlock);
                 SelectNewRandomBlock();
             }

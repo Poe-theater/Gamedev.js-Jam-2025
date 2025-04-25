@@ -29,12 +29,8 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     public void AddToInventory(BlockObjectSO blockSO)
     {
-        print("pistole 2");
-
         if (blockInventory.ContainsKey(blockSO))
         {
-            print("pistole 3");
-
             blockInventory[blockSO]++;
             uiManager.UpdateVisual(blockSO.id, blockInventory[blockSO]);
         }

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 4432997982266524532}
   m_Layer: 0
   m_Name: smash_boy
-  m_TagString: Untagged
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transformDestination: {fileID: 0}
-  agent: {fileID: 0}
+  agent: {fileID: 4432997982266524532}
   initialX: 0
   blockState: 0
   rb: {fileID: -3366542050676682644}

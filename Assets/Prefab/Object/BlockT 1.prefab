@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transformDestination: {fileID: 0}
-  agent: {fileID: 0}
+  agent: {fileID: 1262670182165910731}
   initialX: 0
   blockState: 0
   rb: {fileID: 1767151789611828190}
