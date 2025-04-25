@@ -2,6 +2,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering.Universal;
 
 public enum BlockState { JUST_SPAWNED = 0, FALLING = 1, PLACED = 2, WALKING = 3, ATTACKING = 4}
 
@@ -53,16 +54,38 @@ public class Block : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        // Draws a 5 unit long red line in front of the object
         Gizmos.color = Color.red;
-        Vector3 direction = transform.TransformDirection(Vector3.left) * 105;
+        Vector3 direction = -transform.right * 105;
         Gizmos.DrawRay(transform.position, direction);
+    }
+
+    void FaceTarget()
+    {
+
+        Vector3 direction = (agent.steeringTarget - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+    }
+
+    public bool ReachedDestinationOrGaveUp()
+    {
+        if (!agent.pathPending)
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void Update()
     {
-        RaycastHit hit;
-        Vector3 direction = agent.destination - transform.position;
+        //RaycastHit hit;
+        //Vector3 direction = agent.destination - transform.position;
 
         //Debug.DrawLine(transform.position, direction, Color.red);
 
@@ -76,8 +99,24 @@ public class Block : MonoBehaviour
         //    }
         //}
 
-        if (agent.enabled && transformDestination)
-            agent.destination = transformDestination.position;
+        if (agent.enabled)
+        {
+            if (!ReachedDestinationOrGaveUp())
+            {
+                FaceTarget();
+            }
+            else
+            {
+                OnExplosion();
+            }
+        }
+    }
+
+    private void OnExplosion()
+    {
+        EnemyLogic.Instance.OnAttack();
+        agent.enabled = false;
+        Destroy(gameObject);
     }
 
     public void SetUnitMode(Transform destination)
@@ -88,6 +127,7 @@ public class Block : MonoBehaviour
         DisableRigidBody();
         animator.enabled = true;
         agent.enabled = true;
+        agent.destination = transformDestination.position;
         animator.SetBool("IsWalking", true);
     }
 }

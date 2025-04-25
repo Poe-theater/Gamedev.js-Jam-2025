@@ -13,10 +13,7 @@ public class LanePoint : MonoBehaviour
     {
         if (collision.transform.CompareTag("Block"))
         {
-            //Vector3 newPos = collision.gameObject.transform.position;
-            //newPos.y = blockSnapPos.position.y;
-            //newPos.z = blockSnapPos.position.z;
-            //collision.gameObject.transform.position = newPos;
+            collision.transform.rotation = transform.rotation;
             OnAnyCollisionEnter?.Invoke((pointIndex, isLeft), collision);
         }
     }
