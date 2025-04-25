@@ -51,13 +51,20 @@ public class Block : MonoBehaviour
         rb.isKinematic = true;
     }
 
+    void OnDrawGizmosSelected()
+    {
+        // Draws a 5 unit long red line in front of the object
+        Gizmos.color = Color.red;
+        Vector3 direction = transform.TransformDirection(Vector3.left) * 105;
+        Gizmos.DrawRay(transform.position, direction);
+    }
 
     private void Update()
     {
         RaycastHit hit;
         Vector3 direction = agent.destination - transform.position;
 
-        Debug.DrawLine(transform.position, direction, Color.red);
+        //Debug.DrawLine(transform.position, direction, Color.red);
 
         //if (Physics.Raycast(transform.position, transform.forward, out hit, 100f))
         //{
