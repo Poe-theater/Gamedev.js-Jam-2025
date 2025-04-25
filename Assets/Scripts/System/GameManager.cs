@@ -1,5 +1,7 @@
 using UnityEngine;
 using CodeMonkey.CameraSystem;
+using System;
+using System.Runtime.CompilerServices;
 
 public enum GameState { MainMenu = 0, Playing = 1, Options = 2, Quit = 3 }
 
@@ -12,6 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerDropSystem dropSystem;
     [SerializeField] private BlockProduction blockProduction;
     [SerializeField] private SoundManager soundManager;
+
+    public event EventHandler<GameState> OnGameStateChange;
+
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -40,6 +45,7 @@ public class GameManager : MonoBehaviour
 
         gameState = newState;
 
+        OnGameStateChange?.Invoke(this, gameState);
         switch (gameState)
         {
             case GameState.MainMenu:
