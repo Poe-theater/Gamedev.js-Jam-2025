@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemyLogic : MonoBehaviour
 {
+    [SerializeField] private BlockListSO blockListSO;
     [SerializeField] private List<GameObject> piece;
 
     public float targetTime = 2.0f;
@@ -33,6 +34,9 @@ public class EnemyLogic : MonoBehaviour
 
     void SpawnEnemy()
     {
+        var t = blockListSO.blockListSO[UnityEngine.Random.Range(0, blockListSO.blockListSO.Count)].prefab;
+        GameObject scarpe = Instantiate(t);
+        
         print("spawn nemico");
     }
 
