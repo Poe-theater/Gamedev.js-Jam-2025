@@ -75,7 +75,6 @@ public class GameManager : MonoBehaviour
         dropSystem.OnBlockGrab += DropSystem_OnBlockGrab;
         gridSystem.OnSpawnObject += GridSystem_OnSpawnObject;
         gridSystem.OnGridLvUp += GridSystem_OnGridLvUp;
-        LanePoint.OnAnyCollisionEnter += LanePoint_OnAnyCollisionEnter;
     }
 
     private void UnsubscribeAll()
@@ -84,17 +83,11 @@ public class GameManager : MonoBehaviour
         dropSystem.OnBlockGrab -= DropSystem_OnBlockGrab;
         gridSystem.OnSpawnObject -= GridSystem_OnSpawnObject;
         gridSystem.OnGridLvUp -= GridSystem_OnGridLvUp;
-        LanePoint.OnAnyCollisionEnter -= LanePoint_OnAnyCollisionEnter;
     }
 
     private void OnPlaying()
     {
         //cameraSystem.ResetToDefault();
-    }
-
-    private void LanePoint_OnAnyCollisionEnter((int, bool) tuple, Collision collision)
-    {
-        gridSystem.RemoveLastBlock();
     }
 
     private void GridSystem_OnSpawnObject(object sender, System.EventArgs e)

@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyLogic : MonoBehaviour
 {
     [SerializeField] private BlockListSO blockListSO;
     [SerializeField] private List<GameObject> piece;
+    [SerializeField] private List<Transform> spawnPoint;
+    [SerializeField] private Transform parent;
 
     public float targetTime = 2.0f;
 
@@ -34,9 +37,15 @@ public class EnemyLogic : MonoBehaviour
 
     void SpawnEnemy()
     {
-        var t = blockListSO.blockListSO[UnityEngine.Random.Range(0, blockListSO.blockListSO.Count)].prefab;
-        GameObject scarpe = Instantiate(t);
-        
+        int index = Random.Range(0, spawnPoint.Count);
+        var t = blockListSO.blockListSO[Random.Range(0, blockListSO.blockListSO.Count)].prefab;
+        GameObject test = Instantiate(t, spawnPoint[index].position, Quaternion.identity);
+        test.transform.parent = parent;
+        test.GetComponent<Rigidbody>().isKinematic = false;
+        var coll = test.GetComponent<BoxCollider>();
+        coll.enabled = true;
+        Block block = test.GetComponent<Block>();
+
         print("spawn nemico");
     }
 

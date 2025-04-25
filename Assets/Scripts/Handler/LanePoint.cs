@@ -3,18 +3,21 @@ using UnityEngine;
 
 public class LanePoint : MonoBehaviour
 {
-    [SerializeField] private bool isLeft;
-    [SerializeField] private int pointIndex;
-    [SerializeField] private Transform blockSnapPos;
-
-    public static event Action<(int, bool), Collision> OnAnyCollisionEnter;
+    [SerializeField] private Transform destination;
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.CompareTag("Block"))
         {
-            collision.transform.rotation = transform.rotation;
-            OnAnyCollisionEnter?.Invoke((pointIndex, isLeft), collision);
+            if (collision.gameObject.TryGetComponent<Block>(out Block block))
+            {
+                block.SetUnitMode(destination);
+                Debug.Log("added block to unit");
+            }
+            else
+            {
+                Debug.Log("test");
+            }
         }
     }
 }
