@@ -25,6 +25,7 @@ public class Block : MonoBehaviour
         agent.updateRotation = false;
     }
 
+
     public void UpdateStatus()
     {
         if (blockState == BlockState.JUST_SPAWNED)
