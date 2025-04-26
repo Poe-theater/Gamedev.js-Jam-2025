@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private BlockListSO blockListSO;
     [SerializeField] private Dictionary<BlockObjectSO, int> blockInventory = new();
+
+    public GameObject[] projectile;
 
     private void Start()
     {
@@ -48,12 +51,42 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void ClearInventory()
+    {
+        List<BlockObjectSO> keys = new();
+
+        for (int i = 0; i < keys.Count; i++)
+        {
+            BlockObjectSO key = keys[i];
+            blockInventory[keys[i]] = 0;
+            uiManager.UpdateVisual(keys[i].id, blockInventory[keys[i]]);
+        }
+    }
+
     private void Update()
     {
         if (dropSystem.block == null)
             HandleBlockInput();
         else
             dropSystem.Loop();
+
+        if (Input.GetKeyDown(KeyCode.C)) LaunchProjectile(true);
+        if (Input.GetKeyDown(KeyCode.V)) LaunchProjectile(false);
+
+    }
+
+    private void LaunchProjectile(bool isLeft)
+    {
+        ClearInventory();
+
+        if (isLeft)
+        {
+            projectile[0].GetComponent<bullet>().isLaunched = true;
+        }
+        else
+        {
+            projectile[1].GetComponent<bullet>().isLaunched = true;
+        }
     }
 
     private void HandleBlockInput()

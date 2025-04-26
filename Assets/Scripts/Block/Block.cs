@@ -18,11 +18,12 @@ public class Block : MonoBehaviour
     public BoxCollider[] boxColliders;
     public bool isAttacking = false;
     public GameObject enemy = null;
-
+    public float maxSpeed = 0;
     private void Awake()
     {
         agent.updateUpAxis = false;
         agent.updateRotation = false;
+        agent.updatePosition = false;
     }
 
     public void UpdateStatus()
@@ -47,8 +48,8 @@ public class Block : MonoBehaviour
     private void DisableRigidBody()
     {
         rb.detectCollisions = false;
-        rb.useGravity = false;
-        rb.isKinematic = true;
+        rb.useGravity = true;
+        rb.isKinematic = false;
     }
 
     void OnDrawGizmosSelected()
@@ -63,6 +64,16 @@ public class Block : MonoBehaviour
         Vector3 direction = (agent.steeringTarget - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+    }
+
+    private void FixedUpdate()
+    {
+        if (isStarted)
+        {
+            Vector3 direction = (agent.nextPosition - transform.position).normalized;
+            rb.linearVelocity = direction * agent.speed;
+            FaceTarget();
+        }
     }
 
     public bool ReachedDestinationOrGaveUp()
@@ -93,7 +104,7 @@ public class Block : MonoBehaviour
     {
         if (!enemy && collision.transform.CompareTag("Block"))
         {
-            enemy = other.gameObject;
+            enemy = collision.gameObject;
             Debug.Log($"OnTriggerEnter {name} touched {collision.transform.name}");
         }
     }
@@ -103,12 +114,20 @@ public class Block : MonoBehaviour
         if (!agent.enabled)
             return;
 
+
         if (!ReachedDestinationOrGaveUp())
         {
-            if (!enemy)
-            {
-                print("luckyy me  isAttacking");
-            }
+            //if (agent.velocity.magnitude > maxSpeed)
+            //    maxSpeed = agent.velocity.magnitude;
+
+            //if (!isStarted && agent.velocity.magnitude > 1)
+            //    isStarted = true;
+
+            //if (isStarted && (agent.velocity.magnitude)  < maxSpeed - 2)
+            //{
+            //    animator.SetTrigger("Attack");
+            //    isAttacking = true;
+            //}
 
             FaceTarget();
         }
@@ -139,8 +158,8 @@ public class Block : MonoBehaviour
 
     private void OnExplosion()
     {
-        agent.enabled = false;
-        Destroy(gameObject);
+        //agent.enabled = false;
+        //Destroy(gameObject);
     }
 
     public void SetUnitMode(Transform destination)
@@ -150,10 +169,14 @@ public class Block : MonoBehaviour
 
         transformDestination = destination;
         blockState = BlockState.WALKING;
+        isStarted = true;
 
         DisableRigidBody();
         animator.enabled = true;
         agent.enabled = true;
+        agent.updateUpAxis = false;
+        agent.updateRotation = false;
+        agent.updatePosition = false;
         agent.destination = transformDestination.position;
         animator.SetBool("IsWalking", true);
     }

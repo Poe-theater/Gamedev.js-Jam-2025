@@ -61,6 +61,7 @@ MonoBehaviour:
   - {fileID: 726134365628763871}
   - {fileID: 8682341820528069073}
   isAttacking: 0
+  enemy: {fileID: 0}
 --- !u!33 &4018754623466486341
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -225,5 +226,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 8.485612, y: 8.485608, z: 14.34}
-  m_Center: {x: -0.0000009536743, y: 0, z: 2.96}
+  m_Size: {x: 8.485612, y: 8.485608, z: 20}
+  m_Center: {x: -0.0000009536743, y: 0, z: 6}

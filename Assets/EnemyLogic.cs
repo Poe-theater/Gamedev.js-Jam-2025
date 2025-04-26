@@ -50,6 +50,7 @@ public class EnemyLogic : MonoBehaviour
 
         var prefab = blockListSO.blockListSO[blockIndex].prefab;
         var instance = Instantiate(prefab, spawnPoint[spawnIndex].position, Quaternion.identity, parent);
+        var bl = instance.TryGetComponent(out Block block);
 
         if (instance.TryGetComponent(out Rigidbody rb))
             rb.isKinematic = false;
@@ -57,7 +58,6 @@ public class EnemyLogic : MonoBehaviour
         if (instance.TryGetComponent(out BoxCollider collider))
             collider.enabled = true;
 
-        instance.TryGetComponent(out Block block);
     }
 
 
