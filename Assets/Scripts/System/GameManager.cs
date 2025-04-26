@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Playing:
+                EnemyLogic.Instance.isStarted = true;
                 cameraSystem.SwitchCamera(gameState);
                 blockProduction.ActiveProduction();
                 SubscribeGameplayEvents();

@@ -91,8 +91,8 @@ public class GridSystem : MonoBehaviour
     /// </summary>
     private void UpdateBlockStatuses()
     {
-        for (int i = 0; i < blocks.Count; i++)
-            blocks[i].UpdateStatus();
+        //for (int i = 0; i < blocks.Count; i++)
+        //    blocks[i].UpdateStatus();
     }
 
     /// <summary>

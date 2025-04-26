@@ -1,27 +1,26 @@
 using System;
-using UnityEditor;
-using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering.Universal;
+using UnityEngine;
 
-public enum BlockState { JUST_SPAWNED = 0, FALLING = 1, PLACED = 2, WALKING = 3, ATTACKING = 4}
+
+public enum BlockState { JUST_SPAWNED = 0, FALLING = 1, PLACED = 2, WALKING = 3, ATTACKING = 4 }
 
 [Serializable]
 public class Block : MonoBehaviour
 {
     [SerializeField] private Transform transformDestination;
     [SerializeField] private NavMeshAgent agent;
-    public float initialX;
     public BlockState blockState;
     public Rigidbody rb;
     public Animator animator;
+    public bool isStarted = false;
+    public HandlerBlockAttack handlerBlockAttack;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        initialX = transform.eulerAngles.x;
         agent.updateUpAxis = false;
         agent.updateRotation = false;
     }
@@ -58,7 +57,6 @@ public class Block : MonoBehaviour
         Vector3 direction = -transform.right * 105;
         Gizmos.DrawRay(transform.position, direction);
     }
-
     void FaceTarget()
     {
 
@@ -89,9 +87,10 @@ public class Block : MonoBehaviour
 
         if (!ReachedDestinationOrGaveUp())
         {
-            if (agent.velocity.sqrMagnitude == 0f)
+
+            if (handlerBlockAttack.collideWithEnemy)
             {
-                print("IsEnemyBlockingAhead");
+                print("luckyy me ");
             }
 
             FaceTarget();
@@ -105,9 +104,8 @@ public class Block : MonoBehaviour
     bool IsEnemyBlockingAhead()
     {
         print("IsEnemyBlockingAhead");
-
         Collider[] hits = Physics.OverlapSphere(
-            transform.position + transform.forward * 1f,
+        transform.position + transform.forward * 1f,
             0.5f,
             LayerMask.GetMask("Blocks")
         );
