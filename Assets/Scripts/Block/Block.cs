@@ -1,30 +1,30 @@
 using System;
-using UnityEditor;
-using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering.Universal;
+using UnityEngine;
 
-public enum BlockState { JUST_SPAWNED = 0, FALLING = 1, PLACED = 2, WALKING = 3, ATTACKING = 4}
+
+public enum BlockState { JUST_SPAWNED = 0, FALLING = 1, PLACED = 2, WALKING = 3, ATTACKING = 4 }
 
 [Serializable]
 public class Block : MonoBehaviour
 {
     [SerializeField] private Transform transformDestination;
     [SerializeField] private NavMeshAgent agent;
-    public float initialX;
     public BlockState blockState;
     public Rigidbody rb;
     public Animator animator;
+    public bool isStarted = false;
+    public HandlerBlockAttack handlerBlockAttack;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        initialX = transform.eulerAngles.x;
         agent.updateUpAxis = false;
         agent.updateRotation = false;
     }
+
 
     public void UpdateStatus()
     {
@@ -58,7 +58,6 @@ public class Block : MonoBehaviour
         Vector3 direction = -transform.right * 105;
         Gizmos.DrawRay(transform.position, direction);
     }
-
     void FaceTarget()
     {
 
@@ -84,37 +83,46 @@ public class Block : MonoBehaviour
 
     private void Update()
     {
-        //RaycastHit hit;
-        //Vector3 direction = agent.destination - transform.position;
+        if (!agent.enabled)
+            return;
 
-        //Debug.DrawLine(transform.position, direction, Color.red);
-
-        //if (Physics.Raycast(transform.position, transform.forward, out hit, 100f))
-        //{
-        //    Debug.DrawLine(transform.position, hit.point, Color.red);
-        //    if (hit.collider)
-        //    {
-        //        print($"hitttattoatoaotatotoa {hit.collider.gameObject.name}");
-        //        //animator.SetTrigger("Attack");
-        //    }
-        //}
-
-        if (agent.enabled)
+        if (!ReachedDestinationOrGaveUp())
         {
-            if (!ReachedDestinationOrGaveUp())
+
+            if (handlerBlockAttack.collideWithEnemy)
             {
-                FaceTarget();
+                print("luckyy me ");
             }
-            else
-            {
-                OnExplosion();
-            }
+
+            FaceTarget();
         }
+        else
+        {
+            OnExplosion();
+        }
+    }
+
+    bool IsEnemyBlockingAhead()
+    {
+        print("IsEnemyBlockingAhead");
+        Collider[] hits = Physics.OverlapSphere(
+        transform.position + transform.forward * 1f,
+            0.5f,
+            LayerMask.GetMask("Blocks")
+        );
+        return hits.Length > 0;
+    }
+
+    void HandleBlockedByEnemy()
+    {
+        // e.g., stop, attack, recalculate path, play animation…
+        agent.isStopped = true;
+        print("HandleBlockedByEnemy");
+        //animator.SetTrigger("BlockedAttack");
     }
 
     private void OnExplosion()
     {
-        EnemyLogic.Instance.OnAttack();
         agent.enabled = false;
         Destroy(gameObject);
     }
