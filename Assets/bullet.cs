@@ -10,7 +10,7 @@ public class bullet : MonoBehaviour
     {
         if (isLaunched)
         {
-            rb.AddForce(dir, ForceMode.Impulse);
+            rb.AddForce(dir * 100f, ForceMode.Impulse);
         }
     }
 

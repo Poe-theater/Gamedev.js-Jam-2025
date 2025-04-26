@@ -96,7 +96,7 @@ public class GridSystem : MonoBehaviour
     }
 
 
-    public void DestroyPiece()
+    public bool DestroyPiece()
     {
         int index = UnityEngine.Random.Range(0, blocks.Count);
 
@@ -105,6 +105,8 @@ public class GridSystem : MonoBehaviour
             Destroy(blocks[index]);
             blocks.RemoveAt(index);
         }
+
+        return blocks.Count == 0;
     }
 
     /// <summary>

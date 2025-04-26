@@ -67,17 +67,6 @@ public class Block : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
     }
 
-    private void FixedUpdate()
-    {
-        if (isStarted)
-        {
-            Vector3 direction = (agent.nextPosition - transform.position).normalized;
-            rb.linearVelocity = direction * agent.speed;
-            FaceTarget();
-        }
-    }
-
-
     public bool ReachedDestinationOrGaveUp()
     {
         if (!agent.pathPending)
@@ -117,17 +106,21 @@ public class Block : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (!agent.enabled)
-            return;
 
+    private void LateUpdate()
+    {
         if (isStarted)
         {
             Vector3 direction = (agent.nextPosition - transform.position).normalized;
             rb.linearVelocity = direction * agent.speed;
             FaceTarget();
         }
+    }
+    private void Update()
+    {
+        if (!agent.enabled)
+            return;
+
 
         if (!ReachedDestinationOrGaveUp())
         {
