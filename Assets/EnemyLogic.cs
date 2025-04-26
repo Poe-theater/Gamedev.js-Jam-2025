@@ -52,6 +52,7 @@ public class EnemyLogic : MonoBehaviour
         var instance = Instantiate(prefab, spawnPoint[spawnIndex].position, Quaternion.identity, parent);
         var bl = instance.TryGetComponent(out Block block);
 
+        block.isEnemy = true;
         if (instance.TryGetComponent(out Rigidbody rb))
             rb.isKinematic = false;
 

@@ -1,7 +1,6 @@
 using System;
 using UnityEngine.AI;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 
 public enum BlockState { JUST_SPAWNED = 0, FALLING = 1, PLACED = 2, WALKING = 3, ATTACKING = 4 }
@@ -19,6 +18,9 @@ public class Block : MonoBehaviour
     public bool isAttacking = false;
     public GameObject enemy = null;
     public float maxSpeed = 0;
+    public bool isEnemy = false;
+
+
     private void Awake()
     {
         agent.updateUpAxis = false;
@@ -47,7 +49,6 @@ public class Block : MonoBehaviour
 
     private void DisableRigidBody()
     {
-        rb.detectCollisions = false;
         rb.useGravity = true;
         rb.isKinematic = false;
     }
@@ -76,6 +77,7 @@ public class Block : MonoBehaviour
         }
     }
 
+
     public bool ReachedDestinationOrGaveUp()
     {
         if (!agent.pathPending)
@@ -93,19 +95,25 @@ public class Block : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!enemy && other.transform.CompareTag("Block"))
+        if (enemy == null && other.transform.CompareTag("Block"))
         {
             enemy = other.gameObject;
+            isStarted = false;
+            agent.velocity = Vector3.zero;
+            agent.enabled = false;
             Debug.Log($"OnTriggerEnter {name} touched {other.transform.name}");
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!enemy && collision.transform.CompareTag("Block"))
+        if (enemy == null && collision.transform.CompareTag("Block"))
         {
             enemy = collision.gameObject;
-            Debug.Log($"OnTriggerEnter {name} touched {collision.transform.name}");
+            isStarted = false;
+            agent.velocity = Vector3.zero;
+            agent.enabled = false;
+            Debug.Log($"OnCollisionEnter {name} touched {collision.transform.name}");
         }
     }
 
@@ -114,22 +122,16 @@ public class Block : MonoBehaviour
         if (!agent.enabled)
             return;
 
+        if (isStarted)
+        {
+            Vector3 direction = (agent.nextPosition - transform.position).normalized;
+            rb.linearVelocity = direction * agent.speed;
+            FaceTarget();
+        }
 
         if (!ReachedDestinationOrGaveUp())
         {
-            //if (agent.velocity.magnitude > maxSpeed)
-            //    maxSpeed = agent.velocity.magnitude;
 
-            //if (!isStarted && agent.velocity.magnitude > 1)
-            //    isStarted = true;
-
-            //if (isStarted && (agent.velocity.magnitude)  < maxSpeed - 2)
-            //{
-            //    animator.SetTrigger("Attack");
-            //    isAttacking = true;
-            //}
-
-            FaceTarget();
         }
         else
         {
@@ -137,29 +139,21 @@ public class Block : MonoBehaviour
         }
     }
 
-    //bool IsEnemyBlockingAhead()
-    //{
-    //    print("IsEnemyBlockingAhead");
-    //    Collider[] hits = Physics.OverlapSphere(
-    //    transform.position + transform.forward * 1f,
-    //        0.5f,
-    //        LayerMask.GetMask("Blocks")
-    //    );
-    //    return hits.Length > 0;
-    //}
-
-    //void HandleBlockedByEnemy()
-    //{
-    //    // e.g., stop, attack, recalculate path, play animation…
-    //    agent.isStopped = true;
-    //    print("HandleBlockedByEnemy");
-    //    //animator.SetTrigger("BlockedAttack");
-    //}
-
     private void OnExplosion()
     {
-        //agent.enabled = false;
-        //Destroy(gameObject);
+
+        if (isEnemy)
+        {
+            GameManager.Instance.DestroyPlayerPiece();
+        }
+        else
+        {
+            GameManager.Instance.DestroyEnemyPiece();
+        }
+
+        agent.enabled = false;
+        Destroy(gameObject);
+
     }
 
     public void SetUnitMode(Transform destination)

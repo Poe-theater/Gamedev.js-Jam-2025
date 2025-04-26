@@ -95,6 +95,18 @@ public class GridSystem : MonoBehaviour
         //    blocks[i].UpdateStatus();
     }
 
+
+    public void DestroyPiece()
+    {
+        int index = UnityEngine.Random.Range(0, blocks.Count);
+
+        if (blocks.Count > 0)
+        {
+            Destroy(blocks[index]);
+            blocks.RemoveAt(index);
+        }
+    }
+
     /// <summary>
     /// Moves the quadBlocker upward when certain block count conditions are met.
     /// </summary>

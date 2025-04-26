@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 5954222805514968965}
   - component: {fileID: 726134365628763871}
   - component: {fileID: 4432997982266524532}
-  - component: {fileID: 8682341820528069073}
   m_Layer: 0
   m_Name: smash_boy
   m_TagString: Block
@@ -59,9 +58,9 @@ MonoBehaviour:
   isStarted: 0
   boxColliders:
   - {fileID: 726134365628763871}
-  - {fileID: 8682341820528069073}
   isAttacking: 0
   enemy: {fileID: 0}
+  maxSpeed: 0
 --- !u!33 &4018754623466486341
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -194,7 +193,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7867586793897767936}
   m_Enabled: 0
   m_AgentTypeID: 0
-  m_Radius: 4.242805
+  m_Radius: 3.67
   m_Speed: 30
   m_Acceleration: 8
   avoidancePriority: 50
@@ -207,24 +206,3 @@ NavMeshAgent:
   m_BaseOffset: 4.242804
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!65 &8682341820528069073
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7867586793897767936}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 8.485612, y: 8.485608, z: 20}
-  m_Center: {x: -0.0000009536743, y: 0, z: 6}

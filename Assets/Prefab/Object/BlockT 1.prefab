@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 4330351774025618050}
   - component: {fileID: 4464853597167149067}
   - component: {fileID: 1262670182165910731}
-  - component: {fileID: 7410510470284629507}
   m_Layer: 0
   m_Name: BlockT 1
   m_TagString: Block
@@ -61,8 +60,9 @@ MonoBehaviour:
   boxColliders:
   - {fileID: 4330351774025618050}
   - {fileID: 4464853597167149067}
-  - {fileID: 7410510470284629507}
   isAttacking: 0
+  enemy: {fileID: 0}
+  maxSpeed: 0
 --- !u!33 &1367688647803733985
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -216,7 +216,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 3248361715717724117}
   m_Enabled: 0
   m_AgentTypeID: 0
-  m_Radius: 6.88
+  m_Radius: 2.37
   m_Speed: 30
   m_Acceleration: 8
   avoidancePriority: 50
@@ -229,24 +229,3 @@ NavMeshAgent:
   m_BaseOffset: 4
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!65 &7410510470284629507
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3248361715717724117}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 3.65, y: 8.485608, z: 14.3}
-  m_Center: {x: 0, y: 0, z: 4.98}
