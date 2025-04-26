@@ -10,8 +10,12 @@ public class EnemyLogic : MonoBehaviour
     [SerializeField] private Transform parent;
 
     public bool isStarted = false;
-    public float targetTime = 2.0f;
-
+    private float timeSinceStart = 0f;
+    [SerializeField] private float spawnInterval = 8.0f; 
+    private float spawnTimer = 0f;
+    [SerializeField] private float difficultyIncreaseInterval = 30.0f;
+    [SerializeField] private float difficultyTimer = 0f;
+    [SerializeField] private float spawnReductionFactor = 0.95f;
     public static EnemyLogic Instance { get; private set; }
 
     private void Awake()
@@ -59,15 +63,26 @@ public class EnemyLogic : MonoBehaviour
 
     private void Update()
     {
-        if (isStarted)
-        {
-            targetTime -= Time.deltaTime;
+        if (!isStarted)
+            return;
 
-            if (targetTime <= 0.0f)
-            {
-                SpawnEnemy();
-                targetTime = 2.0f;
-            }
+        timeSinceStart += Time.deltaTime;
+        spawnTimer += Time.deltaTime;
+        difficultyTimer += Time.deltaTime;
+
+        if (spawnTimer >= spawnInterval)
+        {
+            SpawnEnemy();
+            spawnTimer = 0f;
+        }
+
+        if (difficultyTimer >= difficultyIncreaseInterval)
+        {
+            spawnInterval *= spawnReductionFactor; 
+            difficultyTimer = 0f;
+
+            if (spawnInterval < 1.0f)
+                spawnInterval = 1.0f;
         }
     }
 }
