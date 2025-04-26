@@ -15,6 +15,7 @@ public class LanePoint : MonoBehaviour
             }
             else
             {
+
             }
         }
     }

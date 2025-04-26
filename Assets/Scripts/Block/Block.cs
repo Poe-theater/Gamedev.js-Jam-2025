@@ -1,6 +1,7 @@
 using System;
 using UnityEngine.AI;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 
 public enum BlockState { JUST_SPAWNED = 0, FALLING = 1, PLACED = 2, WALKING = 3, ATTACKING = 4 }
@@ -14,17 +15,15 @@ public class Block : MonoBehaviour
     public Rigidbody rb;
     public Animator animator;
     public bool isStarted = false;
-    public HandlerBlockAttack handlerBlockAttack;
+    public BoxCollider[] boxColliders;
+    public bool isAttacking = false;
+    public GameObject enemy = null;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
         agent.updateUpAxis = false;
         agent.updateRotation = false;
     }
-
 
     public void UpdateStatus()
     {
@@ -81,6 +80,24 @@ public class Block : MonoBehaviour
         return false;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!enemy && other.transform.CompareTag("Block"))
+        {
+            enemy = other.gameObject;
+            Debug.Log($"OnTriggerEnter {name} touched {other.transform.name}");
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!enemy && collision.transform.CompareTag("Block"))
+        {
+            enemy = other.gameObject;
+            Debug.Log($"OnTriggerEnter {name} touched {collision.transform.name}");
+        }
+    }
+
     private void Update()
     {
         if (!agent.enabled)
@@ -88,10 +105,9 @@ public class Block : MonoBehaviour
 
         if (!ReachedDestinationOrGaveUp())
         {
-
-            if (handlerBlockAttack.collideWithEnemy)
+            if (!enemy)
             {
-                print("luckyy me ");
+                print("luckyy me  isAttacking");
             }
 
             FaceTarget();
@@ -102,24 +118,24 @@ public class Block : MonoBehaviour
         }
     }
 
-    bool IsEnemyBlockingAhead()
-    {
-        print("IsEnemyBlockingAhead");
-        Collider[] hits = Physics.OverlapSphere(
-        transform.position + transform.forward * 1f,
-            0.5f,
-            LayerMask.GetMask("Blocks")
-        );
-        return hits.Length > 0;
-    }
+    //bool IsEnemyBlockingAhead()
+    //{
+    //    print("IsEnemyBlockingAhead");
+    //    Collider[] hits = Physics.OverlapSphere(
+    //    transform.position + transform.forward * 1f,
+    //        0.5f,
+    //        LayerMask.GetMask("Blocks")
+    //    );
+    //    return hits.Length > 0;
+    //}
 
-    void HandleBlockedByEnemy()
-    {
-        // e.g., stop, attack, recalculate path, play animation…
-        agent.isStopped = true;
-        print("HandleBlockedByEnemy");
-        //animator.SetTrigger("BlockedAttack");
-    }
+    //void HandleBlockedByEnemy()
+    //{
+    //    // e.g., stop, attack, recalculate path, play animation…
+    //    agent.isStopped = true;
+    //    print("HandleBlockedByEnemy");
+    //    //animator.SetTrigger("BlockedAttack");
+    //}
 
     private void OnExplosion()
     {
@@ -129,6 +145,9 @@ public class Block : MonoBehaviour
 
     public void SetUnitMode(Transform destination)
     {
+        foreach (BoxCollider box in boxColliders)
+            box.enabled = true;
+
         transformDestination = destination;
         blockState = BlockState.WALKING;
 

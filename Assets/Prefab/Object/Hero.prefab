@@ -1,72 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4057411419840093251
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7883890830430763237}
-  - component: {fileID: 6674445674205664716}
-  - component: {fileID: 3836569101054170917}
-  m_Layer: 0
-  m_Name: Coll
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7883890830430763237
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4057411419840093251}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.18, y: 0, z: -11.8}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4518789582664540177}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!65 &6674445674205664716
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4057411419840093251}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 18.54, y: 17.02, z: 2}
-  m_Center: {x: -22.99, y: 0, z: 0}
---- !u!114 &3836569101054170917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4057411419840093251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06d4634f1b5f93540816f21f672321b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collideWithEnemy: 0
 --- !u!1 &5333220034471878441
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,6 +16,7 @@ GameObject:
   - component: {fileID: -3738990407382133844}
   - component: {fileID: 5166786974074731838}
   - component: {fileID: 2772257212205151322}
+  - component: {fileID: 3766572144508677847}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Block
@@ -102,8 +36,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7883890830430763237}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8521210414916886849
@@ -124,7 +57,10 @@ MonoBehaviour:
   rb: {fileID: 2736981710776215502}
   animator: {fileID: -3738990407382133844}
   isStarted: 0
-  handlerBlockAttack: {fileID: 3836569101054170917}
+  boxColliders:
+  - {fileID: 5166786974074731838}
+  - {fileID: 3766572144508677847}
+  isAttacking: 0
 --- !u!33 &4655619123286463424
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -270,3 +206,24 @@ NavMeshAgent:
   m_BaseOffset: 8.485609
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!65 &3766572144508677847
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5333220034471878441}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 4.24281, y: 16.971218, z: 15.76}
+  m_Center: {x: 0, y: 0, z: 5.77}

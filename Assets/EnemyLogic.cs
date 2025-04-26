@@ -38,16 +38,24 @@ public class EnemyLogic : MonoBehaviour
 
     void SpawnEnemy()
     {
-        int index = Random.Range(0, spawnPoint.Count);
-        var t = blockListSO.blockListSO[Random.Range(0, blockListSO.blockListSO.Count)].prefab;
-        GameObject test = Instantiate(t, spawnPoint[index].position, Quaternion.identity);
-        test.transform.parent = parent;
-        test.GetComponent<Rigidbody>().isKinematic = false;
-        var coll = test.GetComponent<BoxCollider>();
-        coll.enabled = true;
-        Block block = test.GetComponent<Block>();
+        if (spawnPoint.Count == 0 || blockListSO.blockListSO.Count == 0)
+            return;
 
+        int spawnIndex = Random.Range(0, spawnPoint.Count);
+        int blockIndex = Random.Range(0, blockListSO.blockListSO.Count);
+
+        var prefab = blockListSO.blockListSO[blockIndex].prefab;
+        var instance = Instantiate(prefab, spawnPoint[spawnIndex].position, Quaternion.identity, parent);
+
+        if (instance.TryGetComponent(out Rigidbody rb))
+            rb.isKinematic = false;
+
+        if (instance.TryGetComponent(out BoxCollider collider))
+            collider.enabled = true;
+
+        instance.TryGetComponent(out Block block);
     }
+
 
     private void Update()
     {
