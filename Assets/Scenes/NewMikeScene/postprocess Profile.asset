@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   color:
-    m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0.14515656, b: 0.5018867, a: 1}
   center:
     m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}
   intensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.355
   smoothness:
-    m_OverrideState: 0
-    m_Value: 0.2
+    m_OverrideState: 1
+    m_Value: 0.314
   rounded:
     m_OverrideState: 0
     m_Value: 0
@@ -88,14 +88,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   shadows:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: -0.2591876}
+    m_OverrideState: 1
+    m_Value: {x: 0.7987761, y: 0.817348, z: 1, w: 0.003868325}
   midtones:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 0.9342121, z: 0.77296257, w: 0.058026932}
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 0.8893343, z: 0.7112776, w: 0.088974826}
   highlights:
-    m_OverrideState: 0
-    m_Value: {x: 0, y: 0.62800884, z: 1, w: 0.43713737}
+    m_OverrideState: 1
+    m_Value: {x: 0.010335982, y: 0.29653767, z: 1, w: 0.003868727}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eb4b772797da9440885e8bd939e9560, type: 3}
   m_Name: ColorCurves
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   master:
     m_OverrideState: 0
     m_Value:
@@ -346,7 +346,7 @@ MonoBehaviour:
   lumVsSat:
     m_OverrideState: 1
     m_Value:
-      <length>k__BackingField: 4
+      <length>k__BackingField: 5
       m_Loop: 0
       m_ZeroValue: 0.5
       m_Range: 1
@@ -355,7 +355,16 @@ MonoBehaviour:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0.40000027
+          value: 0.4232561
+          inSlope: 0.59497917
+          outSlope: 0.59497917
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.30575344
+          value: 0.59534895
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -363,8 +372,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.24876711
-          value: 0.5
+          time: 0.49863014
+          value: 0.5906975
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -372,19 +381,19 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.7375343
-          value: 0.5
-          inSlope: -1.5008222
-          outSlope: -1.5008222
+          time: 0.700274
+          value: 0.5534881
+          inSlope: 0
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 1
-          value: 0.27441972
-          inSlope: 0
-          outSlope: 0
+          time: 0.99397266
+          value: 0.32092994
+          inSlope: -1.4724758
+          outSlope: -1.4724758
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -407,10 +416,10 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 0
-    m_Value: {x: 0.5850656, y: 0.5884462, z: 1, w: 0}
+    m_Value: {x: 0.73885864, y: 0.70027184, z: 1, w: 0.0154738035}
   gamma:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: -0.12765984}
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1, z: 1, w: 0.10444845}
   gain:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: 0.51063806}
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1, z: 1, w: 0.40619004}
