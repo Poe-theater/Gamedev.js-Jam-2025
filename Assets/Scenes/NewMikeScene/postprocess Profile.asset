@@ -28,6 +28,52 @@ MonoBehaviour:
   rounded:
     m_OverrideState: 0
     m_Value: 0
+--- !u!114 &-976927422005812959
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
+  m_Name: DepthOfField
+  m_EditorClassIdentifier: 
+  active: 1
+  mode:
+    m_OverrideState: 1
+    m_Value: 1
+  gaussianStart:
+    m_OverrideState: 1
+    m_Value: 0
+  gaussianEnd:
+    m_OverrideState: 1
+    m_Value: 6195
+  gaussianMaxRadius:
+    m_OverrideState: 1
+    m_Value: 1.5
+  highQualitySampling:
+    m_OverrideState: 0
+    m_Value: 0
+  focusDistance:
+    m_OverrideState: 0
+    m_Value: 10
+  aperture:
+    m_OverrideState: 0
+    m_Value: 5.6
+  focalLength:
+    m_OverrideState: 0
+    m_Value: 50
+  bladeCount:
+    m_OverrideState: 0
+    m_Value: 5
+  bladeCurvature:
+    m_OverrideState: 0
+    m_Value: 1
+  bladeRotation:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &-810092281306003613
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -43,13 +89,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.22823985}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.2591876}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 1, y: 0.9342121, z: 0.77296257, w: 0.058026932}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 0, y: 0.62800884, z: 1, w: 0.43713737}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0
@@ -120,6 +166,7 @@ MonoBehaviour:
   - {fileID: 4220465524252870006}
   - {fileID: -810092281306003613}
   - {fileID: 2398094537894026847}
+  - {fileID: -976927422005812959}
 --- !u!114 &2398094537894026847
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -360,10 +407,10 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 1
-    m_Value: {x: 0.8590384, y: 0.8429057, z: 1, w: 0}
+    m_Value: {x: 0.5850656, y: 0.5884462, z: 1, w: 0}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.011605071}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.12765984}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.7736942}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.51063806}
