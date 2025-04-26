@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -59,10 +60,10 @@ public class UIManager : MonoBehaviour
     }
 
     #region variable 
-
     [SerializeField] private Button startButton;
-    [SerializeField] private Button optionsButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button quitButtonInGame;
+    [SerializeField] private Button restartButton;
     [SerializeField] private GameObject buttonContainer;
     [SerializeField] private GameObject titleText;
 
@@ -109,17 +110,29 @@ public class UIManager : MonoBehaviour
             EnterPlayMode();
         });
 
-        optionsButton.onClick.AddListener(() =>
-        {
-            SoundManager.Instance.PlayButtonClick();
-            GameManager.Instance.SetGameState(GameState.Options);
-        });
+
 
         quitButton.onClick.AddListener(() =>
         {
             SoundManager.Instance.PlayButtonClick();
             GameManager.Instance.SetGameState(GameState.Quit);
         });
+        quitButtonInGame.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlayButtonClick();
+            GameManager.Instance.SetGameState(GameState.Quit);
+        });
+        restartButton.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlayButtonClick();
+            RestartGame();
+        });
+    }
+
+    private void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
     }
 
     private void EnterPlayMode()
